@@ -1,0 +1,1 @@
+stm32f4discovery_usb_storage_mass\startup_stm32f469xx.o: startup_stm32f469xx.s

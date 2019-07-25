@@ -1,0 +1,6 @@
+--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include -I ..\USER_BSP\inc -I ../FATFS/Target -I ../FATFS/App -I ../Middlewares/Third_Party/FatFs/src
+-I.\RTE\_stm32f103_storage_mass
+-I"D:\Program Files\Keil\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include"
+-I"D:\Program Files\Keil\ARM\CMSIS\Include"
+-D__UVISION_VERSION="527" -DSTM32F10X_MD -DUSE_HAL_DRIVER -DSTM32F103xB -DUSE_HAL_DRIVER -DSTM32F103xB -DUSE_FULL_ASSERT
+-o stm32f103_storage_mass\stm32f1xx_hal_rcc.o --omf_browse stm32f103_storage_mass\stm32f1xx_hal_rcc.crf --depend stm32f103_storage_mass\stm32f1xx_hal_rcc.d --feedback "stm32f103_storage_mass\stm32f103_storage_mass.fed" "../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c"
