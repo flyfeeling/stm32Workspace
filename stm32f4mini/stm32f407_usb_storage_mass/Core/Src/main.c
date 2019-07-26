@@ -24,6 +24,7 @@
 #include "fatfs.h"
 #include "i2c.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "usb_device.h"
 #include "gpio.h"
@@ -37,6 +38,7 @@
 #include "bsp_lcd.h"
 #include "bsp_ov7670.h"
 #include "bsp_at24cxx.h"
+#include "bsp_delay.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -107,6 +109,7 @@ int main(void)
   MX_FSMC_Init();
   MX_DCMI_Init();
   MX_I2C1_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 	printf("\r\n*****BASIC INFORMATION*****\r\n");
 	printf("Hal Version:%X\r\n", HAL_GetHalVersion());
@@ -129,14 +132,15 @@ int main(void)
 	printf("LCD ID:%X\r\n", bsp_lcd.id);
 	printf("LCD Resolution: %dX%d\r\n", bsp_lcd.height, bsp_lcd.width);
 	
-	uint16_t id = 0;
-	id = BSP_OV_INIT();
-	printf("Cemera ID:%X\r\n", id);
 	
-	uint8_t str[] = "at24c02";
-	BSP_AT24CXX_WRITE(0,str,sizeof(str));
-	printf("EEPROM Write: %s\r\n",str);
-	BSP_AT24CXX_READ(0,str,sizeof(str));
+	BSP_OV_INIT();
+	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
+	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
+	
+	uint8_t str[8] = {0};
+//	BSP_AT24CXX_WRITE(0,str,sizeof(str));
+//	printf("EEPROM Write: %s\r\n",str);
+	BSP_AT24CXX_READ(0,str,7);
 	printf("EEPROM Read: %s\r\n",str);
 	
 	extern uint8_t uart1Value;
@@ -174,8 +178,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		BSP_LED_TOGGLE(1);
-		HAL_Delay(100);
+		BSP_LED_TOGGLE(1); 
+		BSP_DELAY(0, 500, 0);
+		//HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }

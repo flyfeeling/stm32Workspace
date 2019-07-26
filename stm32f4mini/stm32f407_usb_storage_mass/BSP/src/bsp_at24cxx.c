@@ -2,6 +2,7 @@
 
 /*private includes*/
 #include "i2c.h"
+#include "bsp_delay.h"
 /*private macro*/
 #define BSP_AT24CXX_TIMEOUT 	0xFFFFF
 #define BSP_AT24C02_I2C_ADDR 	0XA0
@@ -12,7 +13,7 @@
 /*private funtion decaleration*/
 void BSP_AT24CXX_DELAY(uint32_t us)
 { 
-	for(uint32_t x; x<us; x++)__NOP(); 
+	BSP_DELAY_US(us);
 }
 /*public funtion decaleration*/
 
@@ -20,7 +21,7 @@ void BSP_AT24CXX_DELAY(uint32_t us)
 void BSP_AT24CXX_WRITE_BYTE(uint8_t addr, uint8_t dat)
 {
 	HAL_I2C_Mem_Write(&hi2c1, BSP_AT24C02_I2C_ADDR, addr, I2C_MEMADD_SIZE_8BIT, &dat, 1, BSP_AT24CXX_TIMEOUT);
-	BSP_AT24CXX_DELAY(0x3FFF);
+	//BSP_AT24CXX_DELAY(0);
 }
 uint8_t BSP_AT24CXX_READ_BYTE(uint8_t addr)
 {

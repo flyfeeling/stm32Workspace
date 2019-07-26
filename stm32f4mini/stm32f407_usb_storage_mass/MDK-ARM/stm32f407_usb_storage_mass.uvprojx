@@ -313,7 +313,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;                            ../USB_DEVICE/App;                            ../USB_DEVICE/Target;                            ../Drivers/STM32F4xx_HAL_Driver/Inc;                            ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                            ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                            ../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;                            ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                            ../Drivers/CMSIS/Include;                            ..\BSP\inc;                      ../FATFS/Target;                      ../FATFS/App;                      ../Middlewares/Third_Party/FatFs/src</IncludePath>
+              <IncludePath>../Core/Inc;                                             ../USB_DEVICE/App;                                             ../USB_DEVICE/Target;                                             ../Drivers/STM32F4xx_HAL_Driver/Inc;                                             ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                                             ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                                             ../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;                                             ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                                             ../Drivers/CMSIS/Include;                                             ..\BSP\inc;                                       ../FATFS/Target;                                       ../FATFS/App;                                       ../Middlewares/Third_Party/FatFs/src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -422,6 +422,11 @@
               <FileName>spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/tim.c</FilePath>
             </File>
             <File>
               <FileName>usart.c</FileName>
@@ -522,6 +527,11 @@
               <FileName>bsp_at24cxx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\src\bsp_at24cxx.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\src\bsp_delay.c</FilePath>
             </File>
           </Files>
         </Group>
