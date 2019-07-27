@@ -179,3 +179,13 @@ void BSP_LCD_CLEAR(void)
 	}
  
 }
+
+void BSP_LCD_DRAW_IMAGE(uint32_t addr)
+{
+	uint16_t* iamge = (uint16_t*)addr;
+	BSP_LCD_SET_CURSOR(0, 0);
+	BSP_LCD_WRITE_IR(GRAM_DATA);
+	for(uint32_t pix=0; pix<BSP_LCD_WIDTH*BSP_LCD_HEIGHT; pix++){ 
+				BSP_LCD_WRITE_CTRL_OR_GRAM((uint16_t)iamge[pix]); 
+	}	
+}

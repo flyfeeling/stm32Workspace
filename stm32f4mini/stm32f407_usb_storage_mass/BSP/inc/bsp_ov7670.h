@@ -16,5 +16,7 @@ void BSP_OV_SNAPSHOT_START(uint32_t destaddr);
 void BSP_OV_SUSPEND(void) ;
 void BSP_OV_RESUME(void) ;
 uint8_t BSP_OV_STOP(void) ;
+
+void BSP_OV_SET_FRAME(void);
 #endif
 

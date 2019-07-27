@@ -35,4 +35,6 @@ void 			BSP_LCD_SET_WINDOW(uint16_t xs, uint16_t ys, uint16_t xe, uint16_t ye);
 void 			BSP_LCD_CLEAR(void);
 void 			BSP_LCD_SET_SCAN_DIR(uint16_t dir);
 void 			BSP_LCD_WRITE_CTRL_OR_GRAM(uint16_t dat);
+
+void BSP_LCD_DRAW_IMAGE(uint32_t addr);
 #endif

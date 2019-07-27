@@ -177,73 +177,47 @@ void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* dcmiHandle)
 
 /* USER CODE BEGIN 1 */
 
-/**
-  * @brief  Error DCMI callback.
-  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
-  *                the configuration information for DCMI.
-  * @retval None
-  */
+ 
 void HAL_DCMI_ErrorCallback(DCMI_HandleTypeDef *hdcmi)
-{
-  /* Prevent unused argument(s) compilation warning */
-  //printf("HAL_DCMI_ErrorCallback\r\n");
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_DCMI_ErrorCallback could be implemented in the user file
-   */
+{ 
+  //printf("HAL_DCMI_ErrorCallback\r\n"); 
 }
 
-/**
-  * @brief  Line Event callback.
-  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
-  *                the configuration information for DCMI.
-  * @retval None
-  */
-uint32_t line=0,frame=0;
+ 
+ 
 void HAL_DCMI_LineEventCallback(DCMI_HandleTypeDef *hdcmi)
-{
-  /* Prevent unused argument(s) compilation warning */
-  //printf("HAL_DCMI_LineEventCallback\r\n");
-	line++;
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_DCMI_LineEventCallback could be implemented in the user file
-   */
+{ 
+  //printf("HAL_DCMI_LineEventCallback\r\n"); 
 }
 
-/**
-  * @brief  VSYNC Event callback.
-  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
-  *                the configuration information for DCMI.
-  * @retval None
-  */
+ 
 void HAL_DCMI_VsyncEventCallback(DCMI_HandleTypeDef *hdcmi)
-{
-  /* Prevent unused argument(s) compilation warning */
-  //printf("HAL_DCMI_VsyncEventCallback\r\n");
-	frame++;
-	printf("%d,%d\r\n",line,frame);line=0;
-
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_DCMI_VsyncEventCallback could be implemented in the user file
-   */
+{ 
+  //printf("HAL_DCMI_VsyncEventCallback\r\n"); 
 }
-
-/**
-  * @brief  Frame Event callback.
-  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
-  *                the configuration information for DCMI.
-  * @retval None
-  */
-
+ 
+#include "bsp_lcd.h"
+uint32_t DCMI_FRAME_NUM = 0;
 void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi)	//dma open this irq
-{
-  /* Prevent unused argument(s) compilation warning */
- // printf("HAL_DCMI_FrameEventCallback\r\n");
-	
-
-  /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_DCMI_FrameEventCallback could be implemented in the user file
-   */
+{  
+	DCMI_FRAME_NUM++;
+	BSP_LCD_DRAW_IMAGE(0x68000000); 
 }
+#if 0
+extern __IO uint32_t uwTick; 
+extern HAL_TickFreqTypeDef uwTickFreq; 
+void HAL_IncTick(void)
+{
+  uwTick += uwTickFreq;
+	if(!(uwTick%1000)){
+		uint32_t rate = DCMI_FRAME_NUM;
+		DCMI_FRAME_NUM = 0;
+		printf("Frame rate:%d\r\n",rate);
+		
+	}
+}
+#endif
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

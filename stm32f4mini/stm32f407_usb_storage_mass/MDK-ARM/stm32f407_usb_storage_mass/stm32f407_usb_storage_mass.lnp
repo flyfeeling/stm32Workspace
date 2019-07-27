@@ -26,6 +26,7 @@
 "stm32f407_usb_storage_mass\bsp_delay.o"
 "stm32f407_usb_storage_mass\bsp_color_convert.o"
 "stm32f407_usb_storage_mass\bsp_sccb.o"
+"stm32f407_usb_storage_mass\bsp_button.o"
 "stm32f407_usb_storage_mass\stm32f4xx_hal_pcd.o"
 "stm32f407_usb_storage_mass\stm32f4xx_hal_pcd_ex.o"
 "stm32f407_usb_storage_mass\stm32f4xx_ll_usb.o"

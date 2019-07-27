@@ -1,5 +1,6 @@
-stm32f407_usb_storage_mass/dcmi.o: ..\Core\Src\dcmi.c ..\Core\Inc\dcmi.h \
-  ..\Core\Inc\main.h ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
+stm32f407_usb_storage_mass/bsp_button.o: ..\BSP\src\bsp_button.c \
+  ..\BSP\inc\bsp_button.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Core\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h \
@@ -40,6 +41,4 @@ stm32f407_usb_storage_mass/dcmi.o: ..\Core\Src\dcmi.c ..\Core\Inc\dcmi.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h \
-  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h \
-  D:\Program\ Files\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  ..\BSP\inc\bsp_lcd.h
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pcd_ex.h

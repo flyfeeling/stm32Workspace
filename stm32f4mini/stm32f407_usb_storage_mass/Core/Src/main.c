@@ -136,7 +136,7 @@ int main(void)
 	printf("LCD Resolution: %dX%d\r\n", bsp_lcd.height, bsp_lcd.width);
 	
 	
-
+	
 	
 	uint8_t str[8] = {0};
 //	BSP_AT24CXX_WRITE(0,str,sizeof(str));
@@ -171,24 +171,17 @@ int main(void)
 	
 	
  
-	uint32_t *imgptr = (uint32_t *)CAMERA_BUF;
-	for(uint32_t x=0; x<320; x++)
-	{
-		for(uint32_t y=0; y<240; y++)
-		{
-			imgptr[x*320+y] = 0;
-		} 
-	}
+
 	BSP_OV_INIT();
 	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
 	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
-	BSP_OV_SNAPSHOT_START((uint32_t)CAMERA_BUF);
+	BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
 	
-
+	//__HAL_GPIO_EXTI_GET_FLAG();
 
 	
   /* USER CODE END 2 */
-	
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -196,6 +189,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+//		printf(__HAL_GPIO_EXTI_GET_FLAG());
 		BSP_LED_TOGGLE(1); 
 		BSP_DELAY(0, 500, 0);
 		
