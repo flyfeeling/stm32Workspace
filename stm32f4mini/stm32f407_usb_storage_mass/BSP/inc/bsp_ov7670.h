@@ -11,5 +11,10 @@ typedef struct {
 extern camera_description_strutct bsp_ov7670;
 /*public  funtion decaleration*/
 void BSP_OV_INIT(void);
+void BSP_OV_CONTINUOUS_START(uint32_t destaddr);
+void BSP_OV_SNAPSHOT_START(uint32_t destaddr);
+void BSP_OV_SUSPEND(void) ;
+void BSP_OV_RESUME(void) ;
+uint8_t BSP_OV_STOP(void) ;
 #endif
 

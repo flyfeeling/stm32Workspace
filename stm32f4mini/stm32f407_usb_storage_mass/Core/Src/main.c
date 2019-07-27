@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dcmi.h"
+#include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
 #include "spi.h"
@@ -59,7 +60,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+//uint8_t CAMERA_BUF[1024*1024] __attribute__(( section(".ARM.__at_0x68000000") )) ={0};
+#define CAMERA_BUF 0x68000000
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,6 +104,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_USB_DEVICE_Init();
   MX_SPI1_Init();
@@ -133,9 +136,7 @@ int main(void)
 	printf("LCD Resolution: %dX%d\r\n", bsp_lcd.height, bsp_lcd.width);
 	
 	
-	BSP_OV_INIT();
-	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
-	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
+
 	
 	uint8_t str[8] = {0};
 //	BSP_AT24CXX_WRITE(0,str,sizeof(str));
@@ -167,10 +168,27 @@ int main(void)
 
 //		}
 	} 
+	
+	
+ 
+	uint32_t *imgptr = (uint32_t *)CAMERA_BUF;
+	for(uint32_t x=0; x<320; x++)
+	{
+		for(uint32_t y=0; y<240; y++)
+		{
+			imgptr[x*320+y] = 0;
+		} 
+	}
+	BSP_OV_INIT();
+	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
+	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
+	BSP_OV_SNAPSHOT_START((uint32_t)CAMERA_BUF);
+	
 
 
+	
   /* USER CODE END 2 */
-
+	
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -180,7 +198,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		BSP_LED_TOGGLE(1); 
 		BSP_DELAY(0, 500, 0);
-		//HAL_Delay(100);
+		
   }
   /* USER CODE END 3 */
 }

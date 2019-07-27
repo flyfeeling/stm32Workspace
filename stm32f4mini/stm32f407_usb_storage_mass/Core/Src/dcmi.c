@@ -21,10 +21,11 @@
 #include "dcmi.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "stdio.h" 
 /* USER CODE END 0 */
 
 DCMI_HandleTypeDef hdcmi;
+DMA_HandleTypeDef hdma_dcmi;
 
 /* DCMI init function */
 void MX_DCMI_Init(void)
@@ -32,8 +33,8 @@ void MX_DCMI_Init(void)
 
   hdcmi.Instance = DCMI;
   hdcmi.Init.SynchroMode = DCMI_SYNCHRO_HARDWARE;
-  hdcmi.Init.PCKPolarity = DCMI_PCKPOLARITY_RISING;
-  hdcmi.Init.VSPolarity = DCMI_VSPOLARITY_LOW;
+  hdcmi.Init.PCKPolarity = DCMI_PCKPOLARITY_FALLING;
+  hdcmi.Init.VSPolarity = DCMI_VSPOLARITY_HIGH;
   hdcmi.Init.HSPolarity = DCMI_HSPOLARITY_HIGH;
   hdcmi.Init.CaptureRate = DCMI_CR_ALL_FRAME;
   hdcmi.Init.ExtendedDataMode = DCMI_EXTEND_DATA_8B;
@@ -102,7 +103,30 @@ void HAL_DCMI_MspInit(DCMI_HandleTypeDef* dcmiHandle)
     GPIO_InitStruct.Alternate = GPIO_AF13_DCMI;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+    /* DCMI DMA Init */
+    /* DCMI Init */
+    hdma_dcmi.Instance = DMA2_Stream1;
+    hdma_dcmi.Init.Channel = DMA_CHANNEL_1;
+    hdma_dcmi.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_dcmi.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_dcmi.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_dcmi.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+    hdma_dcmi.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+    hdma_dcmi.Init.Mode = DMA_CIRCULAR;
+    hdma_dcmi.Init.Priority = DMA_PRIORITY_HIGH;
+    hdma_dcmi.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_dcmi) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(dcmiHandle,DMA_Handle,hdma_dcmi);
+
+    /* DCMI interrupt Init */
+    HAL_NVIC_SetPriority(DCMI_IRQn, 1, 0);
+    HAL_NVIC_EnableIRQ(DCMI_IRQn);
   /* USER CODE BEGIN DCMI_MspInit 1 */
+		
 
   /* USER CODE END DCMI_MspInit 1 */
   }
@@ -140,6 +164,11 @@ void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* dcmiHandle)
 
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_6|GPIO_PIN_7);
 
+    /* DCMI DMA DeInit */
+    HAL_DMA_DeInit(dcmiHandle->DMA_Handle);
+
+    /* DCMI interrupt Deinit */
+    HAL_NVIC_DisableIRQ(DCMI_IRQn);
   /* USER CODE BEGIN DCMI_MspDeInit 1 */
 
   /* USER CODE END DCMI_MspDeInit 1 */
@@ -148,6 +177,73 @@ void HAL_DCMI_MspDeInit(DCMI_HandleTypeDef* dcmiHandle)
 
 /* USER CODE BEGIN 1 */
 
+/**
+  * @brief  Error DCMI callback.
+  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+  *                the configuration information for DCMI.
+  * @retval None
+  */
+void HAL_DCMI_ErrorCallback(DCMI_HandleTypeDef *hdcmi)
+{
+  /* Prevent unused argument(s) compilation warning */
+  //printf("HAL_DCMI_ErrorCallback\r\n");
+  /* NOTE : This function Should not be modified, when the callback is needed,
+            the HAL_DCMI_ErrorCallback could be implemented in the user file
+   */
+}
+
+/**
+  * @brief  Line Event callback.
+  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+  *                the configuration information for DCMI.
+  * @retval None
+  */
+uint32_t line=0,frame=0;
+void HAL_DCMI_LineEventCallback(DCMI_HandleTypeDef *hdcmi)
+{
+  /* Prevent unused argument(s) compilation warning */
+  //printf("HAL_DCMI_LineEventCallback\r\n");
+	line++;
+  /* NOTE : This function Should not be modified, when the callback is needed,
+            the HAL_DCMI_LineEventCallback could be implemented in the user file
+   */
+}
+
+/**
+  * @brief  VSYNC Event callback.
+  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+  *                the configuration information for DCMI.
+  * @retval None
+  */
+void HAL_DCMI_VsyncEventCallback(DCMI_HandleTypeDef *hdcmi)
+{
+  /* Prevent unused argument(s) compilation warning */
+  //printf("HAL_DCMI_VsyncEventCallback\r\n");
+	frame++;
+	printf("%d,%d\r\n",line,frame);line=0;
+
+  /* NOTE : This function Should not be modified, when the callback is needed,
+            the HAL_DCMI_VsyncEventCallback could be implemented in the user file
+   */
+}
+
+/**
+  * @brief  Frame Event callback.
+  * @param  hdcmi pointer to a DCMI_HandleTypeDef structure that contains
+  *                the configuration information for DCMI.
+  * @retval None
+  */
+
+void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi)	//dma open this irq
+{
+  /* Prevent unused argument(s) compilation warning */
+ // printf("HAL_DCMI_FrameEventCallback\r\n");
+	
+
+  /* NOTE : This function Should not be modified, when the callback is needed,
+            the HAL_DCMI_FrameEventCallback could be implemented in the user file
+   */
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
