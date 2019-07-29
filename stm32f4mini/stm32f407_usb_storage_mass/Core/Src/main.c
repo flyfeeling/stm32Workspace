@@ -20,10 +20,12 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "crc.h"
 #include "dcmi.h"
 #include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
+#include "libjpeg.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -40,6 +42,7 @@
 #include "bsp_ov7670.h"
 #include "bsp_at24cxx.h"
 #include "bsp_delay.h"
+#include "bsp_button.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -113,6 +116,8 @@ int main(void)
   MX_DCMI_Init();
   MX_I2C1_Init();
   MX_TIM14_Init();
+  MX_CRC_Init();
+  MX_LIBJPEG_Init();
   /* USER CODE BEGIN 2 */
 	printf("\r\n*****BASIC INFORMATION*****\r\n");
 	printf("Hal Version:%X\r\n", HAL_GetHalVersion());
@@ -153,11 +158,11 @@ int main(void)
 //		uint8_t mkfsBuffer[8192] = {0};
 //		retUSER = f_mkfs(USERPath, FM_FAT, 4096, mkfsBuffer, 8192);
 //		if(retUSER == FR_OK){
-			retUSER = f_open(&USERFile, "0:/test.txt", FA_OPEN_EXISTING | FA_READ | FA_WRITE);
+			retUSER = f_open(&USERFile, "0:/test2.txt", FA_OPEN_EXISTING | FA_READ | FA_WRITE);
 			if(retUSER == FR_OK){
 				TCHAR context[512] = {0};
 				UINT bw = 0;
-				printf("f_open() test.txt sucessful!!\r\n");
+				printf("f_open() test2.txt sucessful!!\r\n");
 				//retUSER = f_write(&USERFile, (const TCHAR*)context, sizeof(context), &bw);
 				retUSER = f_read(&USERFile, (TCHAR*)context, sizeof(context), &bw);
 				printf("%s\r\n", context);
@@ -170,7 +175,8 @@ int main(void)
 	} 
 	
 	
- 
+
+												
 
 	BSP_OV_INIT();
 	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
@@ -178,7 +184,22 @@ int main(void)
 	BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
 	
 	//__HAL_GPIO_EXTI_GET_FLAG();
-
+	uint8_t bmp_head[] = {'B','M',								//identify	2byte
+												0x00,0x02,0x58,0x00,		//size			4byte
+												0x00,0x00,0x00,0x00,		//reserve		4byte
+												0x00,0x00,0x00,0x36,		//data off	4byte
+												0x00,0x00,0x00,0x28,		//information size 
+												0x00,0x00,0x00,0xF0,		//width
+												0x00,0x00,0x01,0x40,		//height
+												0x00,0x01,							//fixed
+												0x00,0x10,							//rgb 16bit
+												0x00,0x00,0x00,0x00,		//no compress
+												0x00,0x00,0x00,0x00,		//byte of all pix
+												0x00,0x00,0x00,0x00,		//h resolution
+												0x00,0x00,0x00,0x00,		//v resolution
+												0x00,0x00,0x00,0x00,		//0
+												0x00,0x00,0x00,0x00,		//0 
+											};
 	
   /* USER CODE END 2 */
 
@@ -190,9 +211,25 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 //		printf(__HAL_GPIO_EXTI_GET_FLAG());
-		BSP_LED_TOGGLE(1); 
-		BSP_DELAY(0, 500, 0);
-		
+//		BSP_LED_TOGGLE(1); 
+//		BSP_DELAY(0, 500, 0);
+		if(GET_KEY()!=0)
+		{
+			UINT bw = 0;
+			
+			BSP_DELAY(0,20,0);
+			FIL mybmp;
+			retUSER = f_open(&USERFile, "0:/kkp.bmp", FA_OPEN_EXISTING | FA_READ | FA_WRITE);
+			if(retUSER == FR_OK){
+				BSP_LED_TOGGLE(1); 
+				retUSER = f_write(&USERFile, (const TCHAR*)bmp_head, sizeof(bmp_head), &bw);
+				retUSER = f_write(&USERFile, (const TCHAR*)(0x68000000), 240*320, &bw);
+				retUSER = f_close(&USERFile);
+				printf("f_open() kkp.bmp sucessful!!\r\nwrite in %d byte\r\n",bw);
+			}else{
+				printf("f_open() kkp.bmp failed!!\r\n");
+			}
+		}
   }
   /* USER CODE END 3 */
 }
