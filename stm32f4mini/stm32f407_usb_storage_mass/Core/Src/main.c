@@ -215,8 +215,7 @@ int main(void)
 //		BSP_DELAY(0, 500, 0);
 		if(GET_KEY()!=0)
 		{
-			UINT bw = 0;
-			
+			UINT bw = 0; 
 			BSP_DELAY(0,20,0);
 			FIL mybmp;
 			retUSER = f_open(&USERFile, "0:/kkp.bmp", FA_OPEN_EXISTING | FA_READ | FA_WRITE);
