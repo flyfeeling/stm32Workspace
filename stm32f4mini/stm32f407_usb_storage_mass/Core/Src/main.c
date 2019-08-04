@@ -25,7 +25,6 @@
 #include "dma.h"
 #include "fatfs.h"
 #include "i2c.h"
-#include "libjpeg.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -43,6 +42,7 @@
 #include "bsp_at24cxx.h"
 #include "bsp_delay.h"
 #include "bsp_button.h"
+#include "bsp_enc28j60.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -117,7 +117,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM14_Init();
   MX_CRC_Init();
-  MX_LIBJPEG_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 	printf("\r\n*****BASIC INFORMATION*****\r\n");
 	printf("Hal Version:%X\r\n", HAL_GetHalVersion());
@@ -181,9 +181,27 @@ int main(void)
 	BSP_OV_INIT();
 	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
 	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
-	BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
+	//BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
+	BSP_ENC28J60_CS_SELECTED(0);
+	BSP_DELAY(0, 100, 0); 
+	BSP_ENC28J60_CS_SELECTED(1);
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	BSP_ENC28J60_CS_SELECTED(0);
+	BSP_DELAY(0, 100, 0); 	
+	BSP_ENC28J60_CS_SELECTED(1); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+	BSP_ENC28J60_CS_SELECTED(0);
 	
-	//__HAL_GPIO_EXTI_GET_FLAG();
 	uint8_t bmp_head[] = {'B','M',								//identify	2byte
 												0x00,0x02,0x58,0x00,		//size			4byte
 												0x00,0x00,0x00,0x00,		//reserve		4byte

@@ -4,6 +4,7 @@
 #include "spi.h"
 #include "stdio.h"
 /*private macro*/ 
+#define W25QXX_SPI_HANDLE	hspi1
 #define WIP_Flag                      0x01  /* Write In Progress (WIP) flag */
 //register
 //decription
@@ -28,7 +29,7 @@ w25qxx_description_strutct bsp_w25qxx = {0};
 uint8_t BSP_W25QXX_READ_BYTE(void)
 {
   uint8_t d_read,d_send=0xFF;
-  if(HAL_SPI_TransmitReceive(&hspi1,&d_send,&d_read,1,0xFFFFFF)!=HAL_OK)d_read=0xFF;
+  if(HAL_SPI_TransmitReceive(&W25QXX_SPI_HANDLE,&d_send,&d_read,1,0xFFFFFF)!=HAL_OK)d_read=0xFF;
   return d_read;    
 }
 
@@ -36,7 +37,7 @@ uint8_t BSP_W25QXX_READ_BYTE(void)
 uint8_t BSP_W25QXX_SEND_BYTE(uint8_t byte)
 {
   uint8_t d_read,d_send=byte;
-  if(HAL_SPI_TransmitReceive(&hspi1,&d_send,&d_read,1,0xFFFFFF)!=HAL_OK)d_read=0xFF;
+  if(HAL_SPI_TransmitReceive(&W25QXX_SPI_HANDLE,&d_send,&d_read,1,0xFFFFFF)!=HAL_OK)d_read=0xFF;
   return d_read; 
 }
 

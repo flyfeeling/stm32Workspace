@@ -51,12 +51,8 @@ stm32f407_usb_storage_mass/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Middlewares\Third_Party\FatFs\src\ff_gen_drv.h \
   ..\Middlewares\Third_Party\FatFs\src\diskio.h \
   ..\Middlewares\Third_Party\FatFs\src\ff.h \
-  ..\FATFS\Target\user_diskio.h ..\Core\Inc\i2c.h \
-  ..\LIBJPEG\App\libjpeg.h \
-  ..\Middlewares\Third_Party\LibJPEG\include\jpeglib.h \
-  ..\LIBJPEG\Target\jconfig.h ..\LIBJPEG\Target\jdata_conf.h \
-  ..\LIBJPEG\Target\jmorecfg.h ..\Core\Inc\spi.h ..\Core\Inc\tim.h \
-  ..\Core\Inc\usart.h ..\USB_DEVICE\App\usb_device.h \
+  ..\FATFS\Target\user_diskio.h ..\Core\Inc\i2c.h ..\Core\Inc\spi.h \
+  ..\Core\Inc\tim.h ..\Core\Inc\usart.h ..\USB_DEVICE\App\usb_device.h \
   ..\Middlewares\ST\STM32_USB_Device_Library\Core\Inc\usbd_def.h \
   ..\USB_DEVICE\Target\usbd_conf.h \
   D:\Program\ Files\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
@@ -64,4 +60,5 @@ stm32f407_usb_storage_mass/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Core\Inc\gpio.h ..\Core\Inc\fsmc.h ..\BSP\inc\bsp_w25qxx.h \
   ..\BSP\inc\bsp_sram.h ..\BSP\inc\bsp_led.h ..\BSP\inc\bsp_lcd.h \
   ..\BSP\inc\bsp_ov7670.h ..\BSP\inc\bsp_at24cxx.h \
-  ..\BSP\inc\bsp_delay.h ..\BSP\inc\bsp_button.h
+  ..\BSP\inc\bsp_delay.h ..\BSP\inc\bsp_button.h \
+  ..\BSP\inc\bsp_enc28j60.h ..\BSP\inc\bsp_enc28j60_def.h

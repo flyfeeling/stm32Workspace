@@ -62,10 +62,14 @@ void Error_Handler(void);
 #define LED1_GPIO_Port GPIOF
 #define LED0_Pin GPIO_PIN_10
 #define LED0_GPIO_Port GPIOF
+#define SPI2_RST_Pin GPIO_PIN_1
+#define SPI2_RST_GPIO_Port GPIOC
 #define OV7670_SCL_Pin GPIO_PIN_10
 #define OV7670_SCL_GPIO_Port GPIOB
 #define OV7670_SDA_Pin GPIO_PIN_11
 #define OV7670_SDA_GPIO_Port GPIOB
+#define SPI2_CS_Pin GPIO_PIN_12
+#define SPI2_CS_GPIO_Port GPIOB
 #define SPI1_CS_Pin GPIO_PIN_14
 #define SPI1_CS_GPIO_Port GPIOB
 #define LCD_BL_Pin GPIO_PIN_15

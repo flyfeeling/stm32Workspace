@@ -64,11 +64,17 @@
   */
 
 #define STORAGE_LUN_NBR                  1
-#define STORAGE_BLK_NBR                  0x1000
-#define STORAGE_BLK_SIZ                  0x1000
+#define STORAGE_BLK_NBR                  0x10000
+#define STORAGE_BLK_SIZ                  0x200
 
 /* USER CODE BEGIN PRIVATE_DEFINES */
+#if (STORAGE_BLK_NBR && STORAGE_BLK_SIZ)
+#undef STORAGE_BLK_NBR
+#undef STORAGE_BLK_SIZ
+#endif
 
+#define STORAGE_BLK_NBR                  0x1000
+#define STORAGE_BLK_SIZ                  0x1000
 /* USER CODE END PRIVATE_DEFINES */
 
 /**
