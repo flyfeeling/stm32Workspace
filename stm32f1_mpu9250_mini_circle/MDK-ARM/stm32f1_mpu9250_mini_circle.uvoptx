@@ -135,7 +135,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>???鐆???鐆??</Name>
+          <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,18 +157,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>550</LineNumber>
+          <LineNumber>120</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134223998</Address>
+          <Address>134224288</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c</Filename>
+          <Filename>..\USER_BSP\src\bsp_mpu9250.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\stm32f1_mpu9250_mini_circle\../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c\550</Expression>
+          <Expression>\\stm32f1_mpu9250_mini_circle\../USER_BSP/src/bsp_mpu9250.c\120</Expression>
         </Bp>
       </Breakpoint>
       <Tracepoint>

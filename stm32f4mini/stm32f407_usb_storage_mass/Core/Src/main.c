@@ -75,7 +75,56 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+	typedef struct {
+		//head
+		uint8_t 	bfType[2];	// = {'B','M'};	//windows
+		uint32_t 	bfSize;			//byte 
+		uint16_t	bfReserved1,bfReserved2;
+		uint32_t 	bfOffBits;	//offset of image data
+		//information
+		uint32_t	biSize;			//size of information	/	byte
+		uint32_t	biWidth,biHeight;	//pixel
+		uint16_t	biPlanes;		//always 1
+		uint16_t	biBitCount;	//4,8,16,24,32	color bit
+		uint32_t	biCompression;	//0	no 
+		uint32_t	biSizeImage;		//size of image	/ byte
+		int32_t		biXPelsPerMeter,biYPelsPerMeter;
+		uint32_t	biClrUsed;
+		uint32_t	biClrImportant;		
+		uint8_t 	Plate[64];
+	}	BMP_HEAD;			//54BYTE
+uint8_t plate[64] = {	0x00,0x00,0x00,0x00,0x00,0x00,0x80,0x00,
+											0x00,0x80,0x00,0x00,0x00,0x80,0x80,0x00,
+											0x80,0x00,0x00,0x00,0x80,0x00,0x80,0x00,
+											0x80,0x80,0x00,0x00,0x80,0x80,0x80,0x00,
+											0xc0,0xc0,0xc0,0x00,0x00,0x00,0xff,0x00,
+											0x00,0xff,0x00,0x00,0x00,0xff,0xff,0x00,
+											0xff,0x00,0x00,0x00,0xff,0x00,0xff,0x00,
+											0xff,0xff,0x00,0x00,0xff,0xff,0xff,0x00	};
 
+void InitBmp(uint32_t addr)
+{
+	BMP_HEAD *bmp = (BMP_HEAD *)addr;
+	bmp->bfType[0] = 'B';
+	bmp->bfType[1] = 'M';
+	bmp->bfSize = sizeof(BMP_HEAD) + 240*320/2;	//sizeof(BMP_HEAD) + 240*320*(24/8);	//0x76960000
+	bmp->bfOffBits = (uint32_t)bmp->Plate-addr;	//sizeof(BMP_HEAD);								//0x76000000
+	bmp->bfReserved1 = 0;
+	bmp->bfReserved2 = 0;
+	
+	bmp->biSize = 40;										//0x28000000
+	bmp->biWidth = 240;									//0xf0000000
+	bmp->biHeight = 320;								//0x40010000
+	bmp->biPlanes = 1;									//0x0100
+	bmp->biBitCount = 4;								//0x0400
+	bmp->biCompression = 0;							//0x00000000
+	bmp->biSizeImage = 0;								//0x00960000
+	bmp->biXPelsPerMeter = 0;						//0x00000000
+	bmp->biYPelsPerMeter = 0;						//0x00000000
+	bmp->biClrUsed = 0;
+	bmp->biClrImportant = 0;
+	memcpy(bmp->Plate,plate,64);
+}
 /* USER CODE END 0 */
 
 /**
@@ -139,10 +188,7 @@ int main(void)
 	printf("LCD Type:%s\r\n", bsp_lcd.name);
 	printf("LCD ID:%X\r\n", bsp_lcd.id);
 	printf("LCD Resolution: %dX%d\r\n", bsp_lcd.height, bsp_lcd.width);
-	
-	
-	
-	
+	 
 	uint8_t str[8] = {0};
 //	BSP_AT24CXX_WRITE(0,str,sizeof(str));
 //	printf("EEPROM Write: %s\r\n",str);
@@ -169,56 +215,37 @@ int main(void)
 				retUSER = f_close(&USERFile);
 			}else{
 				printf("f_open() test.txt faild!!\r\n");
-			}
-
+			} 
 //		}
-	} 
-	
-	
-
-												
+	}   
 
 	BSP_OV_INIT();
 	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
 	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
-	//BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
-	BSP_ENC28J60_CS_SELECTED(0);
-	BSP_DELAY(0, 100, 0); 
-	BSP_ENC28J60_CS_SELECTED(1);
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	BSP_ENC28J60_CS_SELECTED(0);
-	BSP_DELAY(0, 100, 0); 	
-	BSP_ENC28J60_CS_SELECTED(1); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-	BSP_ENC28J60_CS_SELECTED(0);
+	BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
+//	BSP_ENC28J60_CS_SELECTED(0);
+//	BSP_DELAY(0, 100, 0); 
+//	BSP_ENC28J60_CS_SELECTED(1);
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	BSP_ENC28J60_CS_SELECTED(0);
+//	BSP_DELAY(0, 100, 0); 	
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
+//	BSP_ENC28J60_CS_SELECTED(0);
 	
-	uint8_t bmp_head[] = {'B','M',								//identify	2byte
-												0x00,0x02,0x58,0x00,		//size			4byte
-												0x00,0x00,0x00,0x00,		//reserve		4byte
-												0x00,0x00,0x00,0x36,		//data off	4byte
-												0x00,0x00,0x00,0x28,		//information size 
-												0x00,0x00,0x00,0xF0,		//width
-												0x00,0x00,0x01,0x40,		//height
-												0x00,0x01,							//fixed
-												0x00,0x10,							//rgb 16bit
-												0x00,0x00,0x00,0x00,		//no compress
-												0x00,0x00,0x00,0x00,		//byte of all pix
-												0x00,0x00,0x00,0x00,		//h resolution
-												0x00,0x00,0x00,0x00,		//v resolution
-												0x00,0x00,0x00,0x00,		//0
-												0x00,0x00,0x00,0x00,		//0 
-											};
-	
+
+	BMP_HEAD bmp={0};
+	InitBmp((uint32_t)&bmp);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -236,11 +263,11 @@ int main(void)
 			UINT bw = 0; 
 			BSP_DELAY(0,20,0);
 			FIL mybmp;
-			retUSER = f_open(&USERFile, "0:/kkp.bmp", FA_OPEN_EXISTING | FA_READ | FA_WRITE);
+			retUSER = f_open(&USERFile, "0:/kkp.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
 			if(retUSER == FR_OK){
 				BSP_LED_TOGGLE(1); 
-				retUSER = f_write(&USERFile, (const TCHAR*)bmp_head, sizeof(bmp_head), &bw);
-				retUSER = f_write(&USERFile, (const TCHAR*)(0x68000000), 240*320, &bw);
+				retUSER = f_write(&USERFile, (const TCHAR*)(&bmp), sizeof(BMP_HEAD), &bw);
+				retUSER = f_write(&USERFile, (const TCHAR*)(0x68000000), 240*320*2, &bw);
 				retUSER = f_close(&USERFile);
 				printf("f_open() kkp.bmp sucessful!!\r\nwrite in %d byte\r\n",bw);
 			}else{

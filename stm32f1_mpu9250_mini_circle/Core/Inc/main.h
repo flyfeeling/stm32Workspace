@@ -61,6 +61,9 @@ void Error_Handler(void);
 #define BSP_KEY0_Pin GPIO_PIN_14
 #define BSP_KEY0_GPIO_Port GPIOC
 #define BSP_KEY0_EXTI_IRQn EXTI15_10_IRQn
+#define BSP_MPU_INT_Pin GPIO_PIN_15
+#define BSP_MPU_INT_GPIO_Port GPIOC
+#define BSP_MPU_INT_EXTI_IRQn EXTI15_10_IRQn
 #define SPI1_CS_Pin GPIO_PIN_4
 #define SPI1_CS_GPIO_Port GPIOA
 #define BSP_LED0_Pin GPIO_PIN_11

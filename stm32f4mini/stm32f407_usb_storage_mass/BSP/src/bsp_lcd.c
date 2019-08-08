@@ -131,7 +131,7 @@ void BSP_LCD_INIT(void)
 		BSP_LCD_WRITE_REG(PANEL_INTERFACE_CTRL2, 0x0600);	
 		
 		BSP_LCD_WRITE_REG(DISPLAY_CTRL1, 0x0133);				//262k color	//turn on display	 //normal display 
-		BSP_LCD_SET_SCAN_DIR(BSP_DIR_U2D_R2L);
+		BSP_LCD_SET_SCAN_DIR(BSP_DIR_D2U_L2R);
 		BSP_LCD_CLEAR();
 		BSP_LCD_BL(1);
 	} 
@@ -187,5 +187,5 @@ void BSP_LCD_DRAW_IMAGE(uint32_t addr)
 	BSP_LCD_WRITE_IR(GRAM_DATA);
 	for(uint32_t pix=0; pix<BSP_LCD_WIDTH*BSP_LCD_HEIGHT; pix++){ 
 				BSP_LCD_WRITE_CTRL_OR_GRAM((uint16_t)iamge[pix]); 
-	}	
+	}	 
 }

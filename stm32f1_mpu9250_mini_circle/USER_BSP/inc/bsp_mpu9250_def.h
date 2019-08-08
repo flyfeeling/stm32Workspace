@@ -3,17 +3,19 @@
 /*public includes*/
 
 /*public macro*/
-#define MPU9250_ADDR			0X68    //MPU6500µ??÷?tIICµ??·
-#define MPU6500_ID1				0X71  	//MPU6500µ??÷?tID1
-#define MPU6500_ID2				0X73  	//MPU6500µ??÷?tID2
+//Èç¹ûAD0½Å(9½Å)½ÓµØ,IICµØÖ·Îª0X68(²»°üº¬×îµÍÎ»).
+//Èç¹û½ÓV3.3,ÔòIICµØÖ·Îª0X69(²»°üº¬×îµÍÎ»).
+#define MPU9250_ADDR			0X68    //MPU6500µÄÆ÷¼þIICµØÖ·
+#define MPU6500_ID1				0X71  	//MPU6500µÄÆ÷¼þID1
+#define MPU6500_ID2				0X73  	//MPU6500µÄÆ÷¼þID2
 
-//MPU9250?ú2?·a×°á?ò???AK8963'?á|??,µ??·oíIDè???:
-#define AK8963_ADDR				0X0C	//AK8963µ?I2Cµ??·
-#define AK8963_ID					0X48	//AK8963µ??÷?tID
+//MPU9250ÄÚ²¿·â×°ÁËÒ»¸öAK8963´ÅÁ¦¼Æ,µØÖ·ºÍIDÈçÏÂ:
+#define AK8963_ADDR				0X0C	//AK8963µÄI2CµØÖ·
+#define AK8963_ID					0X48	//AK8963µÄÆ÷¼þID
 
 
-//AK8963µ??ú2???'??÷
-#define MAG_WIA						0x00	//AK8963µ??÷?tID??'??÷µ??·
+//AK8963µÄÄÚ²¿¼Ä´æÆ÷
+#define MAG_WIA						0x00	//AK8963µÄÆ÷¼þID¼Ä´æÆ÷µØÖ·
 #define MAG_CNTL1     		0X0A    
 #define MAG_CNTL2     		0X0B
 
@@ -24,14 +26,14 @@
 #define MAG_ZOUT_L				0X07
 #define MAG_ZOUT_H				0X08
 
-//MPU6500µ??ú2???'??÷
-#define MPU_SELF_TESTGX_REG		0X00	//×??ì??'??÷X
-#define MPU_SELF_TESTGY_REG		0X01	//×??ì??'??÷Y
-#define MPU_SELF_TESTGZ_REG		0X02	//×??ì??'??÷Z
+//MPU6500µÄÄÚ²¿¼Ä´æÆ÷
+#define MPU_SELF_TESTGX_REG		0X00	//×Ô¼ì¼Ä´æÆ÷X
+#define MPU_SELF_TESTGY_REG		0X01	//×Ô¼ì¼Ä´æÆ÷Y
+#define MPU_SELF_TESTGZ_REG		0X02	//×Ô¼ì¼Ä´æÆ÷Z
 
-#define MPU_SELF_TESTAX_REG		0X0D	//×??ì??'??÷X
-#define MPU_SELF_TESTAY_REG		0X0E	//×??ì??'??÷Y
-#define MPU_SELF_TESTAZ_REG		0X0F	//×??ì??'??÷Z
+#define MPU_SELF_TESTAX_REG		0X0D	//×Ô¼ì¼Ä´æÆ÷X
+#define MPU_SELF_TESTAY_REG		0X0E	//×Ô¼ì¼Ä´æÆ÷Y
+#define MPU_SELF_TESTAZ_REG		0X0F	//×Ô¼ì¼Ä´æÆ÷Z
 
 #define MPU_XG_OFS_H	0X13
 #define MPU_XG_OFS_L	0X14
@@ -47,69 +49,69 @@
 #define MPU_ZA_OFS_H	0X7D
 #define MPU_ZA_OFS_L	0X7E
 
-#define MPU_SAMPLE_RATE_REG		0X19	//2é?ù?µ?ê·??µ?÷
-#define MPU_CFG_REG						0X1A	//??????'??÷
-#define MPU_GYRO_CFG_REG			0X1B	//íó?Yò???????'??÷
-#define MPU_ACCEL_CFG_REG			0X1C	//?ó?ù?è????????'??÷
-#define MPU_ACCEL_CFG2_REG		0X1D	//?ó?ù?è????????'??÷2
-#define MPU_MOTION_DET_REG		0X1F	//???¯?ì2a·§?µéè????'??÷
-#define MPU_FIFO_EN_REG				0X23	//FIFOê1?ü??'??÷
-#define MPU_I2CMST_CTRL_REG		0X24	//IIC?÷?ú??????'??÷
-#define MPU_I2CSLV0_ADDR_REG	0X25	//IIC'ó?ú0?÷?tµ??·??'??÷
-#define MPU_I2CSLV0_REG				0X26	//IIC'ó?ú0êy?Yµ??·??'??÷
-#define MPU_I2CSLV0_CTRL_REG	0X27	//IIC'ó?ú0??????'??÷
-#define MPU_I2CSLV1_ADDR_REG	0X28	//IIC'ó?ú1?÷?tµ??·??'??÷
-#define MPU_I2CSLV1_REG				0X29	//IIC'ó?ú1êy?Yµ??·??'??÷
-#define MPU_I2CSLV1_CTRL_REG	0X2A	//IIC'ó?ú1??????'??÷
-#define MPU_I2CSLV2_ADDR_REG	0X2B	//IIC'ó?ú2?÷?tµ??·??'??÷
-#define MPU_I2CSLV2_REG				0X2C	//IIC'ó?ú2êy?Yµ??·??'??÷
-#define MPU_I2CSLV2_CTRL_REG	0X2D	//IIC'ó?ú2??????'??÷
-#define MPU_I2CSLV3_ADDR_REG	0X2E	//IIC'ó?ú3?÷?tµ??·??'??÷
-#define MPU_I2CSLV3_REG				0X2F	//IIC'ó?ú3êy?Yµ??·??'??÷
-#define MPU_I2CSLV3_CTRL_REG	0X30	//IIC'ó?ú3??????'??÷
-#define MPU_I2CSLV4_ADDR_REG	0X31	//IIC'ó?ú4?÷?tµ??·??'??÷
-#define MPU_I2CSLV4_REG				0X32	//IIC'ó?ú4êy?Yµ??·??'??÷
-#define MPU_I2CSLV4_DO_REG		0X33	//IIC'ó?ú4D'êy?Y??'??÷
-#define MPU_I2CSLV4_CTRL_REG	0X34	//IIC'ó?ú4??????'??÷
-#define MPU_I2CSLV4_DI_REG		0X35	//IIC'ó?ú4?áêy?Y??'??÷
+#define MPU_SAMPLE_RATE_REG		0X19	//²ÉÑùÆµÂÊ·ÖÆµÆ÷
+#define MPU_CFG_REG						0X1A	//ÅäÖÃ¼Ä´æÆ÷
+#define MPU_GYRO_CFG_REG			0X1B	//ÍÓÂÝÒÇÅäÖÃ¼Ä´æÆ÷
+#define MPU_ACCEL_CFG_REG			0X1C	//¼ÓËÙ¶È¼ÆÅäÖÃ¼Ä´æÆ÷
+#define MPU_ACCEL_CFG2_REG		0X1D	//¼ÓËÙ¶È¼ÆÅäÖÃ¼Ä´æÆ÷2
+#define MPU_MOTION_DET_REG		0X1F	//ÔË¶¯¼ì²â·§ÖµÉèÖÃ¼Ä´æÆ÷
+#define MPU_FIFO_EN_REG				0X23	//FIFOÊ¹ÄÜ¼Ä´æÆ÷
+#define MPU_I2CMST_CTRL_REG		0X24	//IICÖ÷»ú¿ØÖÆ¼Ä´æÆ÷
+#define MPU_I2CSLV0_ADDR_REG	0X25	//IIC´Ó»ú0Æ÷¼þµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV0_REG				0X26	//IIC´Ó»ú0Êý¾ÝµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV0_CTRL_REG	0X27	//IIC´Ó»ú0¿ØÖÆ¼Ä´æÆ÷
+#define MPU_I2CSLV1_ADDR_REG	0X28	//IIC´Ó»ú1Æ÷¼þµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV1_REG				0X29	//IIC´Ó»ú1Êý¾ÝµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV1_CTRL_REG	0X2A	//IIC´Ó»ú1¿ØÖÆ¼Ä´æÆ÷
+#define MPU_I2CSLV2_ADDR_REG	0X2B	//IIC´Ó»ú2Æ÷¼þµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV2_REG				0X2C	//IIC´Ó»ú2Êý¾ÝµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV2_CTRL_REG	0X2D	//IIC´Ó»ú2¿ØÖÆ¼Ä´æÆ÷
+#define MPU_I2CSLV3_ADDR_REG	0X2E	//IIC´Ó»ú3Æ÷¼þµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV3_REG				0X2F	//IIC´Ó»ú3Êý¾ÝµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV3_CTRL_REG	0X30	//IIC´Ó»ú3¿ØÖÆ¼Ä´æÆ÷
+#define MPU_I2CSLV4_ADDR_REG	0X31	//IIC´Ó»ú4Æ÷¼þµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV4_REG				0X32	//IIC´Ó»ú4Êý¾ÝµØÖ·¼Ä´æÆ÷
+#define MPU_I2CSLV4_DO_REG		0X33	//IIC´Ó»ú4Ð´Êý¾Ý¼Ä´æÆ÷
+#define MPU_I2CSLV4_CTRL_REG	0X34	//IIC´Ó»ú4¿ØÖÆ¼Ä´æÆ÷
+#define MPU_I2CSLV4_DI_REG		0X35	//IIC´Ó»ú4¶ÁÊý¾Ý¼Ä´æÆ÷
 
-#define MPU_I2CMST_STA_REG		0X36	//IIC?÷?ú×'ì???'??÷
-#define MPU_INTBP_CFG_REG		0X37	//?D??/???·éè????'??÷
-#define MPU_INT_EN_REG			0X38	//?D??ê1?ü??'??÷
-#define MPU_INT_STA_REG			0X3A	//?D??×'ì???'??÷
+#define MPU_I2CMST_STA_REG		0X36	//IICÖ÷»ú×´Ì¬¼Ä´æÆ÷
+#define MPU_INTBP_CFG_REG			0X37	//ÖÐ¶Ï/ÅÔÂ·ÉèÖÃ¼Ä´æÆ÷
+#define MPU_INT_EN_REG				0X38	//ÖÐ¶ÏÊ¹ÄÜ¼Ä´æÆ÷
+#define MPU_INT_STA_REG				0X3A	//ÖÐ¶Ï×´Ì¬¼Ä´æÆ÷
 
-#define MPU_ACCEL_XOUTH_REG		0X3B	//?ó?ù?è?µ,X?á??8????'??÷
-#define MPU_ACCEL_XOUTL_REG		0X3C	//?ó?ù?è?µ,X?áµí8????'??÷
-#define MPU_ACCEL_YOUTH_REG		0X3D	//?ó?ù?è?µ,Y?á??8????'??÷
-#define MPU_ACCEL_YOUTL_REG		0X3E	//?ó?ù?è?µ,Y?áµí8????'??÷
-#define MPU_ACCEL_ZOUTH_REG		0X3F	//?ó?ù?è?µ,Z?á??8????'??÷
-#define MPU_ACCEL_ZOUTL_REG		0X40	//?ó?ù?è?µ,Z?áµí8????'??÷
+#define MPU_ACCEL_XOUTH_REG		0X3B	//¼ÓËÙ¶ÈÖµ,XÖá¸ß8Î»¼Ä´æÆ÷
+#define MPU_ACCEL_XOUTL_REG		0X3C	//¼ÓËÙ¶ÈÖµ,XÖáµÍ8Î»¼Ä´æÆ÷
+#define MPU_ACCEL_YOUTH_REG		0X3D	//¼ÓËÙ¶ÈÖµ,YÖá¸ß8Î»¼Ä´æÆ÷
+#define MPU_ACCEL_YOUTL_REG		0X3E	//¼ÓËÙ¶ÈÖµ,YÖáµÍ8Î»¼Ä´æÆ÷
+#define MPU_ACCEL_ZOUTH_REG		0X3F	//¼ÓËÙ¶ÈÖµ,ZÖá¸ß8Î»¼Ä´æÆ÷
+#define MPU_ACCEL_ZOUTL_REG		0X40	//¼ÓËÙ¶ÈÖµ,ZÖáµÍ8Î»¼Ä´æÆ÷
 
-#define MPU_TEMP_OUTH_REG		0X41	//???è?µ??°?????'??÷
-#define MPU_TEMP_OUTL_REG		0X42	//???è?µµí8????'??÷
+#define MPU_TEMP_OUTH_REG		0X41	//ÎÂ¶ÈÖµ¸ß°ËÎ»¼Ä´æÆ÷
+#define MPU_TEMP_OUTL_REG		0X42	//ÎÂ¶ÈÖµµÍ8Î»¼Ä´æÆ÷
 
-#define MPU_GYRO_XOUTH_REG		0X43	//íó?Yò??µ,X?á??8????'??÷
-#define MPU_GYRO_XOUTL_REG		0X44	//íó?Yò??µ,X?áµí8????'??÷
-#define MPU_GYRO_YOUTH_REG		0X45	//íó?Yò??µ,Y?á??8????'??÷
-#define MPU_GYRO_YOUTL_REG		0X46	//íó?Yò??µ,Y?áµí8????'??÷
-#define MPU_GYRO_ZOUTH_REG		0X47	//íó?Yò??µ,Z?á??8????'??÷
-#define MPU_GYRO_ZOUTL_REG		0X48	//íó?Yò??µ,Z?áµí8????'??÷
+#define MPU_GYRO_XOUTH_REG		0X43	//ÍÓÂÝÒÇÖµ,XÖá¸ß8Î»¼Ä´æÆ÷
+#define MPU_GYRO_XOUTL_REG		0X44	//ÍÓÂÝÒÇÖµ,XÖáµÍ8Î»¼Ä´æÆ÷
+#define MPU_GYRO_YOUTH_REG		0X45	//ÍÓÂÝÒÇÖµ,YÖá¸ß8Î»¼Ä´æÆ÷
+#define MPU_GYRO_YOUTL_REG		0X46	//ÍÓÂÝÒÇÖµ,YÖáµÍ8Î»¼Ä´æÆ÷
+#define MPU_GYRO_ZOUTH_REG		0X47	//ÍÓÂÝÒÇÖµ,ZÖá¸ß8Î»¼Ä´æÆ÷
+#define MPU_GYRO_ZOUTL_REG		0X48	//ÍÓÂÝÒÇÖµ,ZÖáµÍ8Î»¼Ä´æÆ÷
 
-#define MPU_I2CSLV0_DO_REG		0X63	//IIC'ó?ú0êy?Y??'??÷
-#define MPU_I2CSLV1_DO_REG		0X64	//IIC'ó?ú1êy?Y??'??÷
-#define MPU_I2CSLV2_DO_REG		0X65	//IIC'ó?ú2êy?Y??'??÷
-#define MPU_I2CSLV3_DO_REG		0X66	//IIC'ó?ú3êy?Y??'??÷
+#define MPU_I2CSLV0_DO_REG		0X63	//IIC´Ó»ú0Êý¾Ý¼Ä´æÆ÷
+#define MPU_I2CSLV1_DO_REG		0X64	//IIC´Ó»ú1Êý¾Ý¼Ä´æÆ÷
+#define MPU_I2CSLV2_DO_REG		0X65	//IIC´Ó»ú2Êý¾Ý¼Ä´æÆ÷
+#define MPU_I2CSLV3_DO_REG		0X66	//IIC´Ó»ú3Êý¾Ý¼Ä´æÆ÷
 
-#define MPU_I2CMST_DELAY_REG	0X67	//IIC?÷?ú?óê±1üàí??'??÷
-#define MPU_SIGPATH_RST_REG		0X68	//D?o?í¨µà?'????'??÷
-#define MPU_MDETECT_CTRL_REG	0X69	//???¯?ì2a??????'??÷
-#define MPU_USER_CTRL_REG		0X6A	//ó??§??????'??÷
-#define MPU_PWR_MGMT1_REG		0X6B	//µ??'1üàí??'??÷1
-#define MPU_PWR_MGMT2_REG		0X6C	//µ??'1üàí??'??÷2 
-#define MPU_FIFO_CNTH_REG		0X72	//FIFO??êy??'??÷??°???
-#define MPU_FIFO_CNTL_REG		0X73	//FIFO??êy??'??÷µí°???
-#define MPU_FIFO_RW_REG			0X74	//FIFO?áD'??'??÷
-#define MPU_DEVICE_ID_REG		0X75	//?÷?tID??'??÷
+#define MPU_I2CMST_DELAY_REG	0X67	//IICÖ÷»úÑÓÊ±¹ÜÀí¼Ä´æÆ÷
+#define MPU_SIGPATH_RST_REG		0X68	//ÐÅºÅÍ¨µÀ¸´Î»¼Ä´æÆ÷
+#define MPU_MDETECT_CTRL_REG	0X69	//ÔË¶¯¼ì²â¿ØÖÆ¼Ä´æÆ÷
+#define MPU_USER_CTRL_REG		0X6A	//ÓÃ»§¿ØÖÆ¼Ä´æÆ÷
+#define MPU_PWR_MGMT1_REG		0X6B	//µçÔ´¹ÜÀí¼Ä´æÆ÷1
+#define MPU_PWR_MGMT2_REG		0X6C	//µçÔ´¹ÜÀí¼Ä´æÆ÷2 
+#define MPU_FIFO_CNTH_REG		0X72	//FIFO¼ÆÊý¼Ä´æÆ÷¸ß°ËÎ»
+#define MPU_FIFO_CNTL_REG		0X73	//FIFO¼ÆÊý¼Ä´æÆ÷µÍ°ËÎ»
+#define MPU_FIFO_RW_REG			0X74	//FIFO¶ÁÐ´¼Ä´æÆ÷
+#define MPU_DEVICE_ID_REG		0X75	//Æ÷¼þID¼Ä´æÆ÷
 
 
 //
@@ -134,6 +136,8 @@
 #define ASAX	0x10
 #define ASAY	0x11
 #define ASAZ	0x12
+ 
+
 /*public variable extern*/
 
 /*public  funtion decaleration*/

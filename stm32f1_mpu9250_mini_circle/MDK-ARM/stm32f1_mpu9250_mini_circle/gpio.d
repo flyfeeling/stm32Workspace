@@ -28,4 +28,6 @@ stm32f1_mpu9250_mini_circle/gpio.o: ..\Core\Src\gpio.c ..\Core\Inc\gpio.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h \
+  ..\USER_BSP\inc\bsp_delay.h ..\USER_BSP\inc\bsp_mpu9250.h \
+  D:\Program\ Files\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h

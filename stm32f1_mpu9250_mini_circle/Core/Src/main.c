@@ -63,12 +63,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t keyValue = 0;
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
-{   
-	HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin); 
-	BSP_DELAY(0,20,0);
-}
+ 
+
 /* USER CODE END 0 */
 
 /**
@@ -106,14 +102,14 @@ int main(void)
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 	printf("Version:%X\r\n",FIRMWARE_VERSION);
+	BSP_W25QXX_INIT(0);
+	printf("FLASH:%s\r\n",bsp_w25qxx.name);
 	extern uint8_t uart1Value;
-	HAL_UART_Receive_IT(&huart1, &uart1Value, 1);
-	uint8_t xx[5]={0}; 
-	BSP_W25QXX_READ_DATA(0,xx,5);
-	printf("%s\r\n",xx);
+	HAL_UART_Receive_IT(&huart1, &uart1Value, 1); 
 	BSP_MPU_INIT();
+
   /* USER CODE END 2 */
-	
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -121,8 +117,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		//BSP_MPU_TEST();
+		BSP_DELAY(1,0,0);
+//		double temp = 0;
+//		MPU_GET_TEMPERATURE(&temp);
+//		printf("temp=%.2f\r\n", temp);
+//		BSP_DELAY(1,0,0);
 //		uint32_t tickStart = HAL_GetTick();
-//		HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin); 
+		HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin); 
 //		BSP_DELAY(0,100,0);
 //		printf("tick:%d\r\n",HAL_GetTick() - tickStart);
   }

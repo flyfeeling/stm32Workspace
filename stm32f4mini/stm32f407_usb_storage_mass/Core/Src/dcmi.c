@@ -203,7 +203,7 @@ void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef *hdcmi)	//dma open this irq
 	DCMI_FRAME_NUM++;
 	BSP_LCD_DRAW_IMAGE(0x68000000); 
 }
-#if 0
+#if 1
 extern __IO uint32_t uwTick; 
 extern HAL_TickFreqTypeDef uwTickFreq; 
 void HAL_IncTick(void)
@@ -212,7 +212,7 @@ void HAL_IncTick(void)
 	if(!(uwTick%1000)){
 		uint32_t rate = DCMI_FRAME_NUM;
 		DCMI_FRAME_NUM = 0;
-		printf("Frame rate:%d\r\n",rate);
+		//printf("Frame rate:%d\r\n",rate);
 		
 	}
 }

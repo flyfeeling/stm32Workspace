@@ -54,10 +54,10 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : PC13 PC15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_15;
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
@@ -66,6 +66,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(BSP_KEY0_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = BSP_MPU_INT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BSP_MPU_INT_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PA0 PA1 PA2 PA3 
                            PA8 PA11 PA12 PA15 */
@@ -106,7 +112,39 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+#include "bsp_delay.h"
+#include "bsp_mpu9250.h"
+#include "stdio.h"
 
+void BSP_KEY0_CALLBACK()
+{
+	HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin); 
+	BSP_DELAY(0,20,0);
+}
+uint16_t time =0;
+uint16_t tickStart = 0;
+void BSP_MPU_INT_CALLBACK()
+{
+	uint8_t status = BSP_MPU_INT_STATUS();
+	if(time == 2000)
+	{
+		time=0;
+		printf("tick:%d\r\n", HAL_GetTick()-tickStart);
+		tickStart = HAL_GetTick();
+	}else{
+		time++;
+	}
+	//printf("status %x\r\n", status);
+}
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{   
+	switch(GPIO_Pin)
+	{
+		case BSP_KEY0_Pin:BSP_KEY0_CALLBACK();break;
+		case BSP_MPU_INT_Pin:BSP_MPU_INT_CALLBACK();break;
+		default:break;
+	} 
+}
 /* USER CODE END 2 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
