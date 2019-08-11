@@ -29,6 +29,15 @@ typedef struct __FILE {
 }FILE; 
 #else
 __asm(".global __use_no_semihosting\n\t");    
+void _ttywrch()
+{
+
+}
+void _sys_command_string()
+{
+
+
+}
 #endif
 
 FILE __stdout;          

@@ -107,7 +107,7 @@ int main(void)
 	extern uint8_t uart1Value;
 	HAL_UART_Receive_IT(&huart1, &uart1Value, 1); 
 	BSP_MPU_INIT();
-
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
