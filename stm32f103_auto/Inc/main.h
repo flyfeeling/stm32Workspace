@@ -58,12 +58,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define IC1_Pin GPIO_PIN_1
-#define IC1_GPIO_Port GPIOA
 #define PWM1_Pin GPIO_PIN_8
 #define PWM1_GPIO_Port GPIOA
-#define PWM2_Pin GPIO_PIN_9
+#define PWM2_Pin GPIO_PIN_11
 #define PWM2_GPIO_Port GPIOA
+#define IC1_Pin GPIO_PIN_6
+#define IC1_GPIO_Port GPIOB
+#define IC2_Pin GPIO_PIN_7
+#define IC2_GPIO_Port GPIOB
+#define BSP_LED0_Pin GPIO_PIN_8
+#define BSP_LED0_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

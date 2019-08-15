@@ -1,5 +1,7 @@
 --cpu Cortex-M3
 "stm32f103_auto\startup_stm32f103xb.o"
+"stm32f103_auto\pwm.o"
+"stm32f103_auto\encode.o"
 "stm32f103_auto\main.o"
 "stm32f103_auto\gpio.o"
 "stm32f103_auto\tim.o"

@@ -1,4 +1,4 @@
-stm32f103_auto/main.o: ..\Src\main.c ..\Inc\main.h \
+stm32f103_auto/pwm.o: ..\BSP\src\pwm.c ..\Inc\..\BSP\inc\pwm.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
@@ -27,6 +27,5 @@ stm32f103_auto/main.o: ..\Src\main.c ..\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h ..\Inc\tim.h \
-  ..\Inc\main.h ..\Inc\usart.h ..\Inc\gpio.h \
-  D:\Program\ Files\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  ..\Src\..\BSP\inc\pwm.h ..\Src\..\BSP\inc\encode.h
+  ..\Inc\main.h \
+  D:\Program\ Files\Keil\ARM\ARMCLANG\Bin\..\include\stdio.h

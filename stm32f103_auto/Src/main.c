@@ -27,6 +27,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "../BSP/inc/pwm.h"
+#include "../BSP/inc/encode.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,13 +93,13 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM1_Init();
-  MX_TIM2_Init();
   MX_USART1_UART_Init();
+  MX_TIM4_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1); //PWM¿ªÆôº¯Êý
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_2);
-	//HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);//Í£Ö¹PWM
+	BSP_ENCODE_START();
+	BSP_PWM_START(PWM1);
+	BSP_PWM_START(PWM2);
 	printf("pwm start!!\r\n");
   /* USER CODE END 2 */
 
@@ -108,6 +110,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		HAL_Delay(500);
+		//HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin);
   }
   /* USER CODE END 3 */
 }
