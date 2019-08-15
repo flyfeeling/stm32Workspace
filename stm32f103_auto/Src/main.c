@@ -28,7 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
 #include "../BSP/inc/pwm.h"
-#include "../BSP/inc/encode.h"
+#include "../BSP/inc/encoder.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,11 +96,12 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   MX_TIM2_Init();
-  /* USER CODE BEGIN 2 */
-	BSP_ENCODE_START();
+  MX_TIM3_Init();
+  /* USER CODE BEGIN 2 */ 
 	BSP_PWM_START(PWM1);
 	BSP_PWM_START(PWM2);
 	printf("pwm start!!\r\n");
+	BSP_ENCODER_START();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,6 +113,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		HAL_Delay(500);
 		//HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin);
+		printf("encode1: %.3f  encode2: %.3f\r\n",BSP_ENCODER_GET_FREQ(1),BSP_ENCODER_GET_FREQ(2));
   }
   /* USER CODE END 3 */
 }

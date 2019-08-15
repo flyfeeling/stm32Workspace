@@ -1,1 +1,0 @@
-stm32f103_storage_mass\startup_stm32f103xb.o: startup_stm32f103xb.s
