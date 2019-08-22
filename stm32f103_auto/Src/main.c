@@ -29,6 +29,9 @@
 #include "stdio.h"
 #include "../BSP/inc/pwm.h"
 #include "../BSP/inc/encoder.h"
+#include "../BSP/inc/communicate.h"
+#include "../BSP/inc/motion.h"
+#include "../BSP/inc/pid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,7 +46,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define STM32_ROBOT_VERSION "1.0"
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -97,11 +100,23 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-  /* USER CODE BEGIN 2 */ 
-	BSP_PWM_START(PWM1);
-	BSP_PWM_START(PWM2);
-	printf("pwm start!!\r\n");
+  /* USER CODE BEGIN 2 */
+	BSP_COMMUNICATE_INIT();
 	BSP_ENCODER_START();
+	HAL_Delay(100);
+#ifdef STM32_ROBOT_VERSION 
+	printf("+-----------------------------------------------+\r\n");
+	printf("|                                               |\r\n");
+	printf("|               STM32 ROBOT V%s                |\r\n",STM32_ROBOT_VERSION);
+	printf("|                                               |\r\n");
+	printf("+-----------------------------------------------+\r\n");
+#endif
+	BSP_PWM_SET_RATE(PWM1, 0);
+	BSP_PWM_SET_RATE(PWM2, 0);
+	BSP_PWM_SET_RATE(PWM3, 0);
+	BSP_PWM_SET_RATE(PWM4, 0);
+	BSP_PID_CONTROLLER_INIT(&pid_left,50,5,5);
+	BSP_PID_CONTROLLER_INIT(&pid_right,50,5,3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,9 +126,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		HAL_Delay(500);
+		
+		HAL_Delay(10);
 		//HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin);
-		printf("encode1: %.3f  encode2: %.3f\r\n",BSP_ENCODER_GET_FREQ(1),BSP_ENCODER_GET_FREQ(2));
+		//printf("Encoder: (%2.2f , %2.2f)\r\n", wheel.left_speed, wheel.right_speed);
+		//printf("pid: %lf %lf %lf %lf\r\n",pid_left.err, pid_left.err_1, pid_left.err_2, pid_left.delta);
   }
   /* USER CODE END 3 */
 }

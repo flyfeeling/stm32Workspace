@@ -1,14 +1,15 @@
 #include "../BSP/inc/encoder.h"
 
 /*private includes*/
+#include "../BSP/inc/motion.h"
 #include "tim.h"
 #include "stdio.h"
 /*private macro*/
 #define ENCODER1	&htim3
 #define ENCODER2	&htim4
-#define ENCODER_TIM_BASE 		&htim2
-#define ENCODER_ONE_CIRCLE 	1600				//pulse
-#define ENCODER_TIM_UPDATE	10					//ms
+#define ENCODER_TIM_BASE	&htim1
+#define ENCODER_PERIOD		1600				//pulse
+#define ENCODER_TIME			10					//ms
 /*private variable*/
 int32_t enc1_cnt0=0,enc1_cnt1=0,enc1_diff;
 int32_t enc2_cnt0=0,enc2_cnt1=0,enc2_diff;
@@ -31,6 +32,8 @@ void BSP_ENCODER_START(void)
 #endif
 	HAL_TIM_Base_Start_IT(ENCODER_TIM_BASE);
 }
+
+
 void BSP_ENCODER_STOP(void)
 {
 #ifdef ENCODER1
@@ -41,19 +44,27 @@ void BSP_ENCODER_STOP(void)
 #endif
 	HAL_TIM_Base_Stop_IT(ENCODER_TIM_BASE);
 }
-double BSP_ENCODER_GET_FREQ(uint8_t enc)
+
+
+double BSP_ENCODER_GET_FREQ(ENCODER_ENUM enc)
 {
 	double freq = 0;
-	if(enc == 1)
+	if(enc == RIGHT_ENCODER)
 	{
-		freq = (2*enc1_dir-1)*enc1_diff/1.0*(1000/ENCODER_TIM_UPDATE)/ENCODER_ONE_CIRCLE;
+		freq = (2*enc1_dir-1)*enc1_diff/1.0*(1000/ENCODER_TIME)/ENCODER_PERIOD;
 	}
-	else if(enc == 2)
+	else if(enc == LEFT_ENCODER)
 	{
-		freq = (2*enc2_dir-1)*enc2_diff/1.0*(1000/ENCODER_TIM_UPDATE)/ENCODER_ONE_CIRCLE;
+		freq = -(2*enc2_dir-1)*enc2_diff/1.0*(1000/ENCODER_TIME)/ENCODER_PERIOD;
+	}
+	else
+	{
+		Error_Handler();
 	}
 	return freq;
 }
+
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim == ENCODER_TIM_BASE)
@@ -66,17 +77,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		enc2_cnt1 = __HAL_TIM_GET_COUNTER(ENCODER2); 
 		
 		if(enc1_dir){ 
-			enc1_diff = enc1_cnt0 - enc1_cnt1 + ENCODER_ONE_CIRCLE*(enc1_cnt0<enc1_cnt1);
+			enc1_diff = enc1_cnt0 - enc1_cnt1 + ENCODER_PERIOD*(enc1_cnt0<enc1_cnt1);
 		}else{ 
-			enc1_diff = enc1_cnt1 - enc1_cnt0 + ENCODER_ONE_CIRCLE*(enc1_cnt1<enc1_cnt0);
+			enc1_diff = enc1_cnt1 - enc1_cnt0 + ENCODER_PERIOD*(enc1_cnt1<enc1_cnt0);
 		}
 		
 		if(enc2_dir){ 
-			enc2_diff = enc2_cnt0 - enc2_cnt1 + ENCODER_ONE_CIRCLE*(enc2_cnt0<enc2_cnt1);
+			enc2_diff = enc2_cnt0 - enc2_cnt1 + ENCODER_PERIOD*(enc2_cnt0<enc2_cnt1);
 		}else{ 
-			enc2_diff = enc2_cnt1 - enc2_cnt0 + ENCODER_ONE_CIRCLE*(enc2_cnt1<enc2_cnt0);
+			enc2_diff = enc2_cnt1 - enc2_cnt0 + ENCODER_PERIOD*(enc2_cnt1<enc2_cnt0);
 		}
-		 
-		//printf("%d  %d\r\n", enc2_diff,enc2_dir);
+		BSP_MOTION_UPDATE();
 	}
 }
