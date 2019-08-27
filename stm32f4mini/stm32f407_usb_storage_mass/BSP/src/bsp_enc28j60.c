@@ -1,88 +1,175 @@
 /*private includes*/
 #include "bsp_enc28j60.h"
+#include "bsp_delay.h"
 #include "spi.h"
 #include "stdio.h"
 /*private macro*/
 #define ENC28J60_SPI_HANDLE		hspi2
-#define ENC28J60_SPI_TIMEOUT	0xFFFFFFFF
+#define ENC28J60_SPI_TIMEOUT	0xFFFF
 
-#define ENC28J60_ADDRESS_MASK	0X1F
-#define ENC28J60_BANK_MASK		0X60
-#define ENC28J60_PHY_MASK			0X80
+
 /*private variable*/
 
 /*public variable*/
 
 /*private funtion decaleration*/
-
+void BSP_ENC28J60_RST(uint8_t rst)
+{
+	rst?HAL_GPIO_WritePin(SPI2_RST_GPIO_Port, SPI2_RST_Pin, GPIO_PIN_SET):HAL_GPIO_WritePin(SPI2_RST_GPIO_Port, SPI2_RST_Pin, GPIO_PIN_RESET);
+}
 void BSP_ENC28J60_CS_SELECTED(uint8_t cs)
 {
-	cs?HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET):HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_SET);
+	cs>0?HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_RESET):HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_SET);
+	
 }
-void BSP_ENC28J60_SOFT_RESET(void)
+void BSP_ENC28J60_HARDWARE_RESET(void)
 {
-	uint8_t cmd=0XFF;
-	BSP_ENC28J60_CS_SELECTED(1);
-	HAL_SPI_Transmit(&ENC28J60_SPI_HANDLE, &cmd, 1, ENC28J60_SPI_TIMEOUT); 
-	BSP_ENC28J60_CS_SELECTED(0);
+	MX_SPI2_Init();
+	BSP_DELAY(0,10,0);
+	BSP_ENC28J60_RST(0);
+	BSP_DELAY(0,10,0);
+	BSP_ENC28J60_RST(1);
+	BSP_DELAY(0,10,0);
 }
-void BSP_ENC28J60_WRITE_REG(uint8_t  reg, uint8_t  dat)
+
+uint8_t BSP_ENC28J60_READ_OP(uint8_t  op, uint8_t  reg)
 {
-	uint8_t rev=0;
+	uint8_t rev=0xFF, dummy=0xff;
 	BSP_ENC28J60_CS_SELECTED(1);
-	if(reg >= EIE)//write cr
-	{
-		reg = (reg & ENC28J60_ADDRESS_MASK); 
-		reg = (reg | 0X40);
-//		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &reg, &rev, 1, ENC28J60_SPI_TIMEOUT);
-//		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dat, &rev, 1, ENC28J60_SPI_TIMEOUT); 
-		HAL_SPI_Transmit(&ENC28J60_SPI_HANDLE, &reg, 1, ENC28J60_SPI_TIMEOUT); 
-		HAL_SPI_Transmit(&ENC28J60_SPI_HANDLE, &dat, 1, ENC28J60_SPI_TIMEOUT); 
-		BSP_ENC28J60_CS_SELECTED(0);
-		return ;
-	}
-	uint8_t bank = ((reg & ENC28J60_BANK_MASK) >> 6);
-	reg = (reg & ENC28J60_ADDRESS_MASK); 
-	reg = (reg | 0X40);
-	rev = BSP_ENC28J60_READ_REG(ECON1);
-	rev = rev&~(0x03);
-	rev = rev|bank;
-	BSP_ENC28J60_WRITE_REG(ECON1, rev);
-	HAL_SPI_Transmit(&ENC28J60_SPI_HANDLE, &reg, 1, ENC28J60_SPI_TIMEOUT); 
-	HAL_SPI_Transmit(&ENC28J60_SPI_HANDLE, &dat, 1, ENC28J60_SPI_TIMEOUT); 
-	BSP_ENC28J60_CS_SELECTED(0);
-}
-uint8_t BSP_ENC28J60_READ_REG(uint8_t  reg)
-{
-	uint8_t rev = 0;
-	uint8_t dummy = 0XFF;
-	BSP_ENC28J60_CS_SELECTED(1);
-	if(reg >= EIE)//read cr
-	{ 
-		reg = (reg & ENC28J60_ADDRESS_MASK); 
-		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &reg, &rev, 1, ENC28J60_SPI_TIMEOUT);
-		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dummy, &rev, 1, ENC28J60_SPI_TIMEOUT);
-		//HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dummy, &reg, 1, ENC28J60_SPI_TIMEOUT); 
-		BSP_ENC28J60_CS_SELECTED(0);
-		return rev;
-	}
-	uint8_t bank = ((reg & ENC28J60_BANK_MASK) >> 6);
-	reg = (reg & 0X1F); 
-	rev = BSP_ENC28J60_READ_REG(ECON1);
-	rev = rev&~(0x03);
-	rev = rev|bank;
-	BSP_ENC28J60_WRITE_REG(ECON1, rev);
-	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &reg, &rev, 1, ENC28J60_SPI_TIMEOUT);
-	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dummy, &rev, 1, ENC28J60_SPI_TIMEOUT);
+	op = op | ENC28J_REG(reg);
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &op, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dummy, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	if(!ENC28J_IS_ETH(reg)){
+		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dummy, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	} 
 	BSP_ENC28J60_CS_SELECTED(0);
 	return rev;
 }
+
+void BSP_ENC28J60_WRITE_OP(uint8_t  op, uint8_t  reg, uint8_t  dat)
+{
+	uint8_t rev=0xFF;
+	BSP_ENC28J60_CS_SELECTED(1); 
+	op = op | ENC28J_REG(reg);
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &op, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dat, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	BSP_ENC28J60_CS_SELECTED(0); 
+}
+
+void BSP_ENC28J60_READ_BUFFER(uint32_t len, uint8_t *buffer)
+{
+	uint8_t rev=0xFF, dummy=0x00;
+	BSP_ENC28J60_CS_SELECTED(1); 
+	uint8_t dat = RBM;
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dat, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	for(;len>0;len--,buffer++){
+		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dummy, buffer, 1, ENC28J60_SPI_TIMEOUT); 
+	}
+	*buffer = '\0';
+	BSP_ENC28J60_CS_SELECTED(0);	
+}
+
+void BSP_ENC28J60_WRITE_BUFFER(uint32_t len, uint8_t *buffer)
+{
+	uint8_t rev=0xFF, dummy=0x00;
+	BSP_ENC28J60_CS_SELECTED(1); 
+	uint8_t dat = WBM;
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dat, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	for(;len>0;len--,buffer++){
+		HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, buffer, &rev, 1, ENC28J60_SPI_TIMEOUT); 
+	}
+	*buffer = '\0';
+	BSP_ENC28J60_CS_SELECTED(0);	
+}
+
+void BSP_ENC28J60_CHANGE_BANK(uint8_t reg)
+{
+	BSP_ENC28J60_WRITE_OP(BFC, ECON1, 0x03);
+	BSP_ENC28J60_WRITE_OP(BFS, ECON1, ENC28J_BANK(reg));
+}
+
+uint8_t BSP_ENC28J60_READ_CR(uint8_t reg)
+{
+	BSP_ENC28J60_CHANGE_BANK(reg);
+	return BSP_ENC28J60_READ_OP(RCR, reg);
+}
+
+void BSP_ENC28J60_WRITE_CR(uint8_t reg, uint8_t dat)
+{
+	BSP_ENC28J60_CHANGE_BANK(reg);
+	BSP_ENC28J60_WRITE_OP(WCR, reg, dat);
+}
+
+void BSP_ENC28J60_WRITE_PHY(uint8_t addr, uint16_t dat)
+{
+	BSP_ENC28J60_WRITE_CR(MIREGADR, addr);
+	BSP_ENC28J60_WRITE_CR(MIWRL, (uint8_t)dat);
+	BSP_ENC28J60_WRITE_CR(MIWRH, dat>>8);
+	while(BSP_ENC28J60_READ_CR(MISTAT) & 0x01)
+	{
+		//busy
+	}
+}
+
+void BSP_ENC28J60_INIT(uint8_t* macaddr)
+{
+	BSP_ENC28J60_CS_SELECTED(0);	
+	BSP_ENC28J60_WRITE_OP(SC,0,SC);
+	// Rx Start
+	BSP_ENC28J60_WRITE_CR(ERXSTL, RXSTART_INIT&0xFF);
+	BSP_ENC28J60_WRITE_CR(ERXSTH, RXSTART_INIT>>8); 
+	
+	BSP_ENC28J60_WRITE_CR(ERXRDPTL, RXSTART_INIT&0xFF);
+	BSP_ENC28J60_WRITE_CR(ERXRDPTH, RXSTART_INIT>>8);
+	// RX end
+	BSP_ENC28J60_WRITE_CR(ERXNDL, RXSTOP_INIT&0xFF);
+	BSP_ENC28J60_WRITE_CR(ERXNDH, RXSTOP_INIT>>8);
+	// TX start
+	BSP_ENC28J60_WRITE_CR(ETXSTL, TXSTART_INIT&0xFF);
+	BSP_ENC28J60_WRITE_CR(ETXSTH, TXSTART_INIT>>8);
+	// TX end
+	BSP_ENC28J60_WRITE_CR(ETXNDL, TXSTOP_INIT&0xFF);
+	BSP_ENC28J60_WRITE_CR(ETXNDH, TXSTOP_INIT>>8);
+	
+	BSP_ENC28J60_WRITE_CR(ERXFCON, 0x20|0x20|0x10);
+	BSP_ENC28J60_WRITE_CR(EPMM0, 0x3f);
+	BSP_ENC28J60_WRITE_CR(EPMM1, 0x30);
+	BSP_ENC28J60_WRITE_CR(EPMCSL, 0xf9);
+	BSP_ENC28J60_WRITE_CR(EPMCSH, 0xf7);
+	
+	BSP_ENC28J60_WRITE_CR(MACON1, 0x01|0x08|0x04); 
+	BSP_ENC28J60_WRITE_CR(MACON2, 0x00); 
+	BSP_ENC28J60_WRITE_OP(BFS, MACON3, 0x20|0x10|0x02|0x01); 
+	BSP_ENC28J60_WRITE_CR(MAIPGL, 0x12); 
+	BSP_ENC28J60_WRITE_CR(MAIPGH, 0x0C);  
+	BSP_ENC28J60_WRITE_CR(MABBIPG, 0x12); 
+	BSP_ENC28J60_WRITE_CR(MAMXFLL, 1500&0xFF);
+	BSP_ENC28J60_WRITE_CR(MAMXFLH, 1500>>8);
+	
+	BSP_ENC28J60_WRITE_CR(MAADR5, macaddr[0]);	
+	BSP_ENC28J60_WRITE_CR(MAADR4, macaddr[1]);
+	BSP_ENC28J60_WRITE_CR(MAADR3, macaddr[2]);
+	BSP_ENC28J60_WRITE_CR(MAADR2, macaddr[3]);
+	BSP_ENC28J60_WRITE_CR(MAADR1, macaddr[4]);
+	BSP_ENC28J60_WRITE_CR(MAADR0, macaddr[5]);
+	
+	BSP_ENC28J60_WRITE_PHY(0x00, 0x0100); 
+	BSP_ENC28J60_WRITE_PHY(0x10, 0x0100);  
+	BSP_ENC28J60_CHANGE_BANK(ECON1);  
+	BSP_ENC28J60_WRITE_OP(BFS, EIE, 0x80|0x40); 
+	BSP_ENC28J60_WRITE_OP(BFS, ECON1, 0x04); 
+}
+
+uint8_t BSP_ENC28J60_GET_REV(void)
+{
+	return BSP_ENC28J60_READ_CR(EREVID);
+}
+
 uint8_t BSP_ENC28J60_READ(uint8_t  dat)
 {
 	uint8_t rev = 0;   
-	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dat, &rev, 1, ENC28J60_SPI_TIMEOUT);  
-	return rev;
- 
+	HAL_SPI_TransmitReceive(&ENC28J60_SPI_HANDLE, &dat, &rev, 1, ENC28J60_SPI_TIMEOUT);   
+	return rev; 
 }
 /*public funtion decaleration*/
 

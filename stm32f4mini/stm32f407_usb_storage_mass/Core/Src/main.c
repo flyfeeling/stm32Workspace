@@ -43,6 +43,8 @@
 #include "bsp_delay.h"
 #include "bsp_button.h"
 #include "bsp_enc28j60.h"
+#include "bsp_comm.h"
+#include "bsp_nrf24lxx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -168,6 +170,7 @@ int main(void)
   MX_CRC_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
+	#if 1	//basic informaton
 	printf("\r\n*****BASIC INFORMATION*****\r\n");
 	printf("Hal Version:%X\r\n", HAL_GetHalVersion());
 	printf("HCLK Freq: %.2f MHz\r\n", HAL_RCC_GetHCLKFreq()/1.0/1000/1000);
@@ -177,27 +180,31 @@ int main(void)
 	printf("Device ID:%X\r\n", HAL_GetDEVID());
 	printf("Device Revision ID:%X\r\n", HAL_GetREVID());
 	printf("Device UID : %X%X%X\r\n", HAL_GetUIDw0(),HAL_GetUIDw1(),HAL_GetUIDw2());
-	
+	#endif
+	#if 0 //w25q
 	printf("\r\n*****BSP INIT*****\r\n");
 	BSP_W25QXX_INIT(0);
 	printf("Flash Type:%s \r\n", bsp_w25qxx.name);
 	printf("Flash Unique ID:%llX \r\n", bsp_w25qxx.unique_id);
 	printf("Flash Capicity:%.2f KB\r\n", bsp_w25qxx.capicity/1024.0); 
-	
+	#endif
+	#if 0	//lcd
 	BSP_LCD_INIT();
 	printf("LCD Type:%s\r\n", bsp_lcd.name);
 	printf("LCD ID:%X\r\n", bsp_lcd.id);
 	printf("LCD Resolution: %dX%d\r\n", bsp_lcd.height, bsp_lcd.width);
-	 
+	#endif
+	#if 0 //at24c
 	uint8_t str[8] = {0};
 //	BSP_AT24CXX_WRITE(0,str,sizeof(str));
 //	printf("EEPROM Write: %s\r\n",str);
 	BSP_AT24CXX_READ(0,str,7);
 	printf("EEPROM Read: %s\r\n",str);
-	
-	extern uint8_t uart1Value;
-	HAL_UART_Receive_IT(&huart1, &uart1Value, 1);
-	
+	#endif 
+	#if 1 //comm
+	BSP_COMMUNICATE_INIT();
+	#endif
+	#if 0 //fatfs
 	retUSER = f_mount(&USERFatFS, (const TCHAR*)USERPath, 1) ;
 	if(retUSER == FR_OK){
 		printf("f_mount() disk 0:/ sucessful!!\r\n");
@@ -218,34 +225,78 @@ int main(void)
 			} 
 //		}
 	}   
-
+	#endif
+	#if 0 //ov7670
 	BSP_OV_INIT();
 	printf("Cemera ID:%X\r\n", bsp_ov7670.id);
 	printf("Cemera Manufactory ID:%X\r\n", bsp_ov7670.mftr_id);
 	BSP_OV_CONTINUOUS_START((uint32_t)CAMERA_BUF);
-//	BSP_ENC28J60_CS_SELECTED(0);
-//	BSP_DELAY(0, 100, 0); 
-//	BSP_ENC28J60_CS_SELECTED(1);
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	BSP_ENC28J60_CS_SELECTED(0);
-//	BSP_DELAY(0, 100, 0); 	
-//	BSP_ENC28J60_CS_SELECTED(1); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); 
-//	BSP_ENC28J60_CS_SELECTED(0);
+	#endif
+	#if 0
+	BSP_NRF24LXX_INIT(); 
+  #endif
 	
 
+	#if 0
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIE & 0x1f)));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));	//
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //EIE			00
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //EIR			00
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ESTAT		01
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ECON2		80
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ECON1		00
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ERDPTL	FA
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ERDPTH	05
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //EWRPTL	00		
+//	BSP_ENC28J60_CS_SELECTED(0);
+	
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((EIR & 0x1f)));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF));	//
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //EIR			00
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ESTAT		01
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ECON2		80
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ECON1		00
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ERDPTL	FA
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ERDPTH	05
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //EWRPTL	00		
+//	BSP_ENC28J60_CS_SELECTED(0);
+
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ((ECON1 & 0x1f)));
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ECON1	00
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0xFF)); //ECON1	00 
+//	BSP_ENC28J60_CS_SELECTED(0);
+	
+	uint8_t enc28j60_MAC[6] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
+	//BSP_ENC28J60_INIT(enc28j60_MAC);
+	printf("BSP_ENC28J60_GET_REV:%X \r\n",BSP_ENC28J60_GET_REV());
+//	
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	BSP_ENC28J60_READ(ENC28J_REG(EIE)|WCR);
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0x01)); //ECON2		80 
+//	BSP_ENC28J60_CS_SELECTED(0);
+//	
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	BSP_ENC28J60_READ(ENC28J_REG(EIR)|WCR);
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0x02)); //ECON2		80 
+//	BSP_ENC28J60_CS_SELECTED(0);
+//	
+//	BSP_ENC28J60_CS_SELECTED(1); 
+//	BSP_ENC28J60_READ(ENC28J_REG(ECON1)|WCR);
+//	printf("ETH CARD:%X\r\n", BSP_ENC28J60_READ(0x02)); //ECON2		80  
+//	BSP_ENC28J60_CS_SELECTED(0);
+	#endif
+	
+
+	
+	
+
+#if 0
 	BMP_HEAD bmp={0};
 	InitBmp((uint32_t)&bmp);
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -255,13 +306,21 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//		printf(__HAL_GPIO_EXTI_GET_FLAG());
+ 
 //		BSP_LED_TOGGLE(1); 
-//		BSP_DELAY(0, 500, 0);
+		BSP_DELAY(0, 500, 0); 
 		if(GET_KEY()!=0)
-		{
+		{ 
 			UINT bw = 0; 
 			BSP_DELAY(0,20,0);
+			
+			#if 0
+			uint8_t dat[32] = "nrf24l01plus test string";
+			BSP_NRF24LXX_TRANSMIT(0, dat, 32);
+			//BSP_NRF24LXX_TRANSMIT_NACK(0, dat, 32); 
+			#endif
+			 
+			#if 0
 			FIL mybmp;
 			retUSER = f_open(&USERFile, "0:/kkp.txt", FA_OPEN_ALWAYS | FA_READ | FA_WRITE);
 			if(retUSER == FR_OK){
@@ -273,7 +332,10 @@ int main(void)
 			}else{
 				printf("f_open() kkp.bmp failed!!\r\n");
 			}
+			#endif
 		}
+
+
   }
   /* USER CODE END 3 */
 }

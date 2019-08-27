@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx,USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;                                                                                  ../USB_DEVICE/App;                                                                                  ../USB_DEVICE/Target;                                                                                  ../Drivers/STM32F4xx_HAL_Driver/Inc;                                                                                  ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                                                                                  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                                                                                  ../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;                                                                                  ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                                                                                  ../Drivers/CMSIS/Include;                                                                                  ..\BSP\inc;                                                                            ../FATFS/Target;                                                                            ../FATFS/App;                                                                            ../Middlewares/Third_Party/FatFs/src</IncludePath>
+              <IncludePath>../Core/Inc;                                                                                                    ../USB_DEVICE/App;                                                                                                    ../USB_DEVICE/Target;                                                                                                    ../Drivers/STM32F4xx_HAL_Driver/Inc;                                                                                                    ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;                                                                                                    ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;                                                                                                    ../Middlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc;                                                                                                    ../Drivers/CMSIS/Device/ST/STM32F4xx/Include;                                                                                                    ../Drivers/CMSIS/Include;                                                                                                    ..\BSP\inc;                                                                                              ../FATFS/Target;                                                                                              ../FATFS/App;                                                                                              ../Middlewares/Third_Party/FatFs/src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -562,6 +562,16 @@
               <FileName>bsp_enc28j60.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\src\bsp_enc28j60.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_comm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\src\bsp_comm.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_nrf24lxx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\src\bsp_nrf24lxx.c</FilePath>
             </File>
           </Files>
         </Group>

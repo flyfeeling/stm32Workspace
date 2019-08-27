@@ -74,6 +74,13 @@ void Error_Handler(void);
 #define SPI1_CS_GPIO_Port GPIOB
 #define LCD_BL_Pin GPIO_PIN_15
 #define LCD_BL_GPIO_Port GPIOB
+#define NRF_CE_Pin GPIO_PIN_6
+#define NRF_CE_GPIO_Port GPIOG
+#define NRF_CS_Pin GPIO_PIN_7
+#define NRF_CS_GPIO_Port GPIOG
+#define NRF_INT_Pin GPIO_PIN_8
+#define NRF_INT_GPIO_Port GPIOG
+#define NRF_INT_EXTI_IRQn EXTI9_5_IRQn
 #define OV7670_XCLK_Pin GPIO_PIN_8
 #define OV7670_XCLK_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */

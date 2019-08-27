@@ -21,39 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-#include "stdio.h"
-#include "bsp_led.h"
-#if __ARMCLIB_VERSION == 5060037
-#pragma import(__use_no_semihosting)
-typedef struct __FILE { 
-    int handle; 
-}FILE; 
-#else
-__asm(".global __use_no_semihosting\n\t");
-#endif
 
-FILE __stdout;          
-void _sys_exit(int x) 
-{ 
-    x = x; 
-}
-
-int fputc(int ch, FILE *f){    
-    while((USART1->SR&0X40)==0);
-    USART1->DR = (uint8_t) ch;     
-		BSP_LED_TOGGLE(0);
-    return ch;
-}
-void _ttywrch(int x)
-{
-	x = x; 
-}
-void _sys_command_string(int x)
-{
-	x = x; 
-}
-
-uint8_t uart1Value = 0;
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -168,25 +136,7 @@ void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart)
    */ 
 }
 
-/**
-  * @brief  Rx Transfer completed callbacks.
-  * @param  huart: pointer to a UART_HandleTypeDef structure that contains
-  *                the configuration information for the specified UART module.
-  * @retval None
-  */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  /* Prevent unused argument(s) compilation warning */
-	if(huart == &huart1)
-	{
-		printf("uart1 receive: %c\r\n", uart1Value);
-		HAL_UART_Receive_IT(&huart1, &uart1Value, 1);
-	}
-	
-  /* NOTE: This function Should not be modified, when the callback is needed,
-           the HAL_UART_RxCpltCallback could be implemented in the user file
-   */
-}
+
 
 /**
   * @brief  Rx Half Transfer completed callbacks.
