@@ -5,12 +5,12 @@
 /*public macro*/
 //如果AD0脚(9脚)接地,IIC地址为0X68(不包含最低位).
 //如果接V3.3,则IIC地址为0X69(不包含最低位).
-#define MPU9250_ADDR			0X68    //MPU6500的器件IIC地址
+#define MPU9250_IIC_SLAVE_ADDR	0X68    //MPU6500的器件IIC地址
 #define MPU6500_ID1				0X71  	//MPU6500的器件ID1
 #define MPU6500_ID2				0X73  	//MPU6500的器件ID2
 
 //MPU9250内部封装了一个AK8963磁力计,地址和ID如下:
-#define AK8963_ADDR				0X0C	//AK8963的I2C地址
+#define AK8963_IIC_SLAVE_ADDR	0X0C	//AK8963的I2C地址
 #define AK8963_ID					0X48	//AK8963的器件ID
 
 

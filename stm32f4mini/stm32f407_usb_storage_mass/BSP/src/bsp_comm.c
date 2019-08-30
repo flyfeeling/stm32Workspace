@@ -16,6 +16,13 @@ uint32_t com1BufPtr = 0;
 /*private funtion decaleration*/
 #include "stdio.h"
 #include "bsp_led.h"
+
+#ifdef __GUNC__
+#define PUTCHAR_PROTOTYPE	int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE	int fputc(int ch, FILE *f)
+#endif
+
 #if __ARMCLIB_VERSION == 5060037
 #pragma import(__use_no_semihosting)
 typedef struct __FILE { 
@@ -29,7 +36,7 @@ void _sys_command_string(int x){	x = x; }
 #endif
 
 FILE __stdout;          
-int fputc(int ch, FILE *f){    
+PUTCHAR_PROTOTYPE{    
     while((USART1->SR&0X40)==0);
     USART1->DR = (uint8_t) ch;     
 		BSP_LED_TOGGLE(0);

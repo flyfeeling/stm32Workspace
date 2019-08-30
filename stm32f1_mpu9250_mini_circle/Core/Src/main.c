@@ -30,7 +30,8 @@
 /* USER CODE BEGIN Includes */
 #include "bsp_w25qxx.h"
 #include "bsp_mpu9250.h"
-#include "bsp_delay.h"
+#include "bsp_delay.h" 
+
 #include "stdio.h"
 /* USER CODE END Includes */
 
@@ -63,7 +64,75 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void BSP_KEY0_CALLBACK()
+{
+	HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin); 
+	BSP_DELAY(0,20,0);
+} 
  
+void BSP_MPU_INT_CALLBACK()
+{
+#if 0
+	static uint16_t time =0;
+	static uint16_t tickStart = 0, tickEnd = 0, tickDiff;
+	//uint8_t status = BSP_MPU_INT_STATUS();
+	//	printf("mpu int\r\n");
+	time++;
+	if(time == 3000)
+	{
+		time=0;
+		tickEnd = HAL_GetTick();
+		if(tickEnd>=tickStart){
+			tickDiff = tickEnd - tickStart;
+		}else{
+			tickDiff = 65536 - tickStart + tickEnd;
+		}
+		
+		
+		//printf("Frequence :	%.2fHz	Tick :	%d\r\n", 3000*1000/1.0/tickDiff, tickDiff);
+		tickStart = tickEnd; 
+		
+	} 
+#endif
+	static uint8_t IntTime = 0;
+	IntTime++;
+	if(IntTime == 10)
+	{
+		IntTime = 0;
+		BSP_MPU_TEST();
+	}
+#if 0	 
+	uint8_t mag_status = BSP_MPU_MAG_STATUS(0); 
+	static uint16_t mag_time=0;
+	static uint16_t mag_tickStart = 0, mag_tickEnd = 0, mag_tickDiff;
+	if(mag_status & 0x01){
+		BSP_MPU_TEST();
+		mag_time++;
+		if(mag_time == 1000){
+			mag_time=0;
+			mag_tickEnd = HAL_GetTick();
+			if(mag_tickEnd>=mag_tickStart){
+				mag_tickDiff = mag_tickEnd - mag_tickStart;
+			}else{
+				mag_tickDiff = 65536 - mag_tickStart + mag_tickEnd;
+			}
+			//printf("Frequence :	%.2fHz	Tick :	%d\r\n", 1000*1000/1.0/mag_tickDiff, mag_tickDiff);
+			mag_tickStart = mag_tickEnd;
+		} 
+	}
+#endif
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{   
+	switch(GPIO_Pin)
+	{
+		case BSP_KEY0_Pin			:	BSP_KEY0_CALLBACK();break;
+		case BSP_MPU_INT_Pin	:	BSP_MPU_INT_CALLBACK();break;
+		default:break;
+	} 
+}
 
 /* USER CODE END 0 */
 
@@ -106,6 +175,8 @@ int main(void)
 	printf("FLASH:%s\r\n",bsp_w25qxx.name);
 	extern uint8_t uart1Value;
 	HAL_UART_Receive_IT(&huart1, &uart1Value, 1); 
+	
+	HAL_Delay(10);
 	BSP_MPU_INIT();
 	
   /* USER CODE END 2 */
