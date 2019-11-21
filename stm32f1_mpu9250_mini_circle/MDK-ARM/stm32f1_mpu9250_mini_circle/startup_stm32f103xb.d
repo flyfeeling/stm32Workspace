@@ -1,1 +1,0 @@
-stm32f1_mpu9250_mini_circle\startup_stm32f103xb.o: startup_stm32f103xb.s

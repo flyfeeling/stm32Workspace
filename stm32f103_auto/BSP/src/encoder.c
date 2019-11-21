@@ -5,8 +5,8 @@
 #include "tim.h"
 #include "stdio.h"
 /*private macro*/
-#define ENCODER1	&htim3
-#define ENCODER2	&htim4
+#define ENCODER1					&htim3
+#define ENCODER2					&htim4
 #define ENCODER_TIM_BASE	&htim1
 #define ENCODER_PERIOD		1600				//pulse
 #define ENCODER_TIME			10					//ms
