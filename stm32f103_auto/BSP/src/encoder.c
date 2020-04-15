@@ -8,7 +8,7 @@
 #define ENCODER1					&htim3
 #define ENCODER2					&htim4
 #define ENCODER_TIM_BASE	&htim1
-#define ENCODER_PERIOD		1600				//pulse
+#define ENCODER_PERIOD		1560					//pulse	390/1600
 #define ENCODER_TIME			10					//ms
 /*private variable*/
 int32_t enc1_cnt0=0,enc1_cnt1=0,enc1_diff;
@@ -49,17 +49,12 @@ void BSP_ENCODER_STOP(void)
 double BSP_ENCODER_GET_FREQ(ENCODER_ENUM enc)
 {
 	double freq = 0;
-	if(enc == RIGHT_ENCODER)
+	switch (enc)
 	{
-		freq = (2*enc1_dir-1)*enc1_diff/1.0*(1000/ENCODER_TIME)/ENCODER_PERIOD;
-	}
-	else if(enc == LEFT_ENCODER)
-	{
-		freq = -(2*enc2_dir-1)*enc2_diff/1.0*(1000/ENCODER_TIME)/ENCODER_PERIOD;
-	}
-	else
-	{
-		Error_Handler();
+		case RIGHT_ENCODER: freq = (2*enc1_dir-1)*enc1_diff/1.0*(1000/ENCODER_TIME)/ENCODER_PERIOD; break;
+		case LEFT_ENCODER: freq = -(2*enc2_dir-1)*enc2_diff/1.0*(1000/ENCODER_TIME)/ENCODER_PERIOD; break;
+		default:Error_Handler();break;
+	
 	}
 	return freq;
 }
@@ -87,6 +82,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		}else{ 
 			enc2_diff = enc2_cnt1 - enc2_cnt0 + ENCODER_PERIOD*(enc2_cnt1<enc2_cnt0);
 		}
+		
+//		printf("%d, %d\r\n",enc1_diff, enc2_diff);
 		BSP_MOTION_UPDATE();
 	}
 }

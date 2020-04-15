@@ -19,11 +19,11 @@ void BSP_PID_CONTROLLER_INIT(pid_struct* pid, double kp, double ki, double kd)
 	pid->ki = ki;
 	pid->kd = kd;
 }
-void BSP_PID_SET_TARGET(pid_struct* pid,double target)
+void BSP_PID_SET_TARGET(pid_struct* pid, double target)
 {
 	pid->target = target;
 }
-void BSP_PID_SET_CURRENT(pid_struct* pid,double current)
+void BSP_PID_SET_CURRENT(pid_struct* pid, double current)
 {
 	pid->current = current;
 }
@@ -43,6 +43,6 @@ double BSP_PID_UPDATE(pid_struct* pid)
 #if PID_DEBUG
 	pid->delta = delta;
 #endif
-	
+//	printf("pid: %lf %lf %lf %lf\r\n",pid->err, derr, dderr, delta);
 	return delta;
 }

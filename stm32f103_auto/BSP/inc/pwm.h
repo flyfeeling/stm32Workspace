@@ -6,7 +6,9 @@
 #define PWM1	TIM_CHANNEL_1
 #define PWM2	TIM_CHANNEL_2
 #define PWM3	TIM_CHANNEL_3
-#define PWM4	TIM_CHANNEL_4 
+#define PWM4	TIM_CHANNEL_4
+
+#define PWM_PERIOD		10000
 /*public variable extern*/
 
 /*public  funtion decaleration*/

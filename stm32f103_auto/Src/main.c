@@ -90,7 +90,18 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+	/****************************************
+	 * 		HARDWARE CONFIGURE DESCRIPTION 		*
+	 ****************************************
+		
+			tim2 for pwm - 
+				PA0-PA3 : PWM1 - PWM4
+				
+			tim1, tim3, tim4 for encoder - 
+				tim1 :	tim_base
+				tim3, tim4 : enc1(A6,A7), enc2(B6,B7)
+	
+	*****************************************/
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -115,8 +126,9 @@ int main(void)
 	BSP_PWM_SET_RATE(PWM2, 0);
 	BSP_PWM_SET_RATE(PWM3, 0);
 	BSP_PWM_SET_RATE(PWM4, 0);
-	BSP_PID_CONTROLLER_INIT(&pid_left,50,5,5);
-	BSP_PID_CONTROLLER_INIT(&pid_right,50,5,3);
+	BSP_PID_CONTROLLER_INIT(&pid_left,0,220,0);
+	//BSP_PID_CONTROLLER_INIT(&pid_right,50,0,0);
+	printf("[System] Init finish.\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -129,8 +141,8 @@ int main(void)
 		
 		HAL_Delay(10);
 		//HAL_GPIO_TogglePin(BSP_LED0_GPIO_Port, BSP_LED0_Pin);
-		//printf("Encoder: (%2.2f , %2.2f)\r\n", wheel.left_speed, wheel.right_speed);
-		//printf("pid: %lf %lf %lf %lf\r\n",pid_left.err, pid_left.err_1, pid_left.err_2, pid_left.delta);
+//		printf("Encoder: (%2.2f , %2.2f)\r\n", wheel.left_speed, wheel.right_speed);
+//		printf("pid: %lf %lf %lf %lf\r\n",pid_left.err, pid_left.err_1, pid_left.err_2, pid_left.delta);
   }
   /* USER CODE END 3 */
 }

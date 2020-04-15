@@ -4,7 +4,6 @@
 #include "tim.h" 
 /*private macro*/
 #define PWM_TIM_BASE	&htim2
-#define PWM_PERIOD		1000
 /*private variable*/
  
 /*public variable*/
@@ -46,7 +45,7 @@ void BSP_PWM_SET_PULSE(uint32_t pwm, uint32_t pulse)
 {
 	TIM_OC_InitTypeDef sConfigOC = {0}; 
 	if(pulse > PWM_PERIOD)pulse = PWM_PERIOD;
-	if(pulse < 120)pulse = 0;
+	if(pulse < 2000)pulse = 0;
 	sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = pulse;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
